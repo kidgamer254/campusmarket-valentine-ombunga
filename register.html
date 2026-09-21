@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration — CampusMarket</title>
+  <meta name="description" content="Join CampusMarket — the trusted student-run marketplace. Create your account to start buying and selling on campus safely." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =========================================================
+       HEADER
+       ========================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="header-inner">
+
+        <a href="index.html" class="logo" aria-label="CampusMarket Homepage">
+          <span class="logo-icon" aria-hidden="true">🎓</span>
+          <span class="logo-text">Campus<span>Market</span></span>
+        </a>
+
+        <nav class="primary-nav" aria-label="Main navigation">
+          <a href="index.html" class="nav-link" id="nav-home">Home</a>
+          <a href="catalog.html" class="nav-link" id="nav-catalog">Catalog</a>
+          <a href="index.html#categories" class="nav-link" id="nav-cats">Categories</a>
+          <a href="index.html#how-it-works" class="nav-link" id="nav-how">How It Works</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="catalog.html" class="btn btn-secondary" id="header-browse-btn">Browse Listings</a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- =========================================================
+         REGISTRATION FORM SECTION
+         ========================================================= -->
+    <section class="auth-section" aria-labelledby="register-heading">
+      <div class="container">
+
+        <div class="auth-card">
+          <header class="auth-header">
+            <p class="section-eyebrow">Student Sign Up</p>
+            <h1 id="register-heading">Create Your Account</h1>
+            <p>Join fellow students buying and selling safely on campus.</p>
+          </header>
+
+          <form id="registration-form" novalidate aria-label="Student Registration Form">
+
+            <!-- Field 1: Full Name (Required check) -->
+            <div class="form-group">
+              <label for="reg-name" class="form-label">Full Name <span class="req" aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="reg-name"
+                name="name"
+                class="form-input"
+                placeholder="e.g. Clifford Meroka"
+                autocomplete="name"
+                aria-describedby="name-error"
+                required
+              />
+              <span class="field-error" id="name-error" role="alert"></span>
+            </div>
+
+            <!-- Field 2: University Email (Format check) -->
+            <div class="form-group">
+              <label for="reg-email" class="form-label">University Email <span class="req" aria-hidden="true">*</span></label>
+              <input
+                type="email"
+                id="reg-email"
+                name="email"
+                class="form-input"
+                placeholder="e.g. student@university.ac.ke"
+                autocomplete="email"
+                aria-describedby="email-hint email-error"
+                required
+              />
+              <span class="form-hint" id="email-hint">Use your university or college email address.</span>
+              <span class="field-error" id="email-error" role="alert"></span>
+            </div>
+
+            <!-- Field 3: Campus Selection -->
+            <div class="form-group">
+              <label for="reg-campus" class="form-label">Select Campus <span class="req" aria-hidden="true">*</span></label>
+              <select id="reg-campus" name="campus" class="form-select" required aria-describedby="campus-error">
+                <option value="">-- Choose your campus --</option>
+                <option value="main">Main Campus</option>
+                <option value="west">West Campus / Science Complex</option>
+                <option value="medical">Medical &amp; Health Sciences Campus</option>
+                <option value="law">Law School / Parklands</option>
+                <option value="downtown">City / Downtown Campus</option>
+              </select>
+              <span class="field-error" id="campus-error" role="alert"></span>
+            </div>
+
+            <!-- Field 4: Password with Interactive Show/Hide Toggle -->
+            <div class="form-group">
+              <label for="reg-password" class="form-label">Password <span class="req" aria-hidden="true">*</span></label>
+              <div class="password-input-wrap">
+                <input
+                  type="password"
+                  id="reg-password"
+                  name="password"
+                  class="form-input"
+                  placeholder="At least 6 characters"
+                  autocomplete="new-password"
+                  aria-describedby="password-hint password-error"
+                  required
+                />
+                <button type="button" class="btn-toggle-pw" id="toggle-pw-btn" aria-label="Toggle password visibility">
+                  <span class="toggle-icon" aria-hidden="true">👁️</span>
+                  <span class="toggle-text">Show</span>
+                </button>
+              </div>
+              <span class="form-hint" id="password-hint">Must be at least 6 characters.</span>
+              <span class="field-error" id="password-error" role="alert"></span>
+            </div>
+
+            <!-- Field 5: Confirm Password (Custom Rule: Must Match) -->
+            <div class="form-group">
+              <label for="reg-confirm-password" class="form-label">Confirm Password <span class="req" aria-hidden="true">*</span></label>
+              <input
+                type="password"
+                id="reg-confirm-password"
+                name="confirm_password"
+                class="form-input"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+                aria-describedby="confirm-error"
+                required
+              />
+              <span class="field-error" id="confirm-error" role="alert"></span>
+            </div>
+
+            <!-- Field 6: Terms and Conditions -->
+            <div class="form-group">
+              <label class="form-checkbox-label" for="reg-terms">
+                <input type="checkbox" id="reg-terms" name="terms" required aria-describedby="terms-error" />
+                <span>I agree to the <a href="#" style="color:var(--clr-primary-dark); text-decoration:underline;">Campus Safety Guidelines</a> and Marketplace Community Rules.</span>
+              </label>
+              <span class="field-error" id="terms-error" role="alert"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block" id="reg-submit-btn">
+              Create Student Account →
+            </button>
+
+            <!-- Interactive UI Feedback Message (Success / Error banner) -->
+            <div class="form-feedback" id="form-feedback" aria-live="polite" style="display:none;"></div>
+
+          </form>
+
+          <footer class="auth-footer">
+            <p>Already have an account? <a href="catalog.html">Browse listings as guest</a></p>
+          </footer>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon" aria-hidden="true">🎓</div>
+            <span class="logo-text">Campus<span>Market</span></span>
+          </a>
+          <p>The trusted student-run marketplace for universities. Safe, verified, and 100% student-focused.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="catalog.html">All Listings</a></li>
+            <li><a href="catalog.html#books">Textbooks</a></li>
+            <li><a href="catalog.html#electronics">Electronics</a></li>
+            <li><a href="catalog.html#clothing">Clothing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Account</h4>
+          <ul class="footer-links">
+            <li><a href="register.html">Sign Up</a></li>
+            <li><a href="catalog.html">Catalog</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#how-it-works">Safety Tips</a></li>
+            <li><a href="#">Contact Support</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 CampusMarket. Made with ❤️ by students, for students.</p>
+        <p><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
