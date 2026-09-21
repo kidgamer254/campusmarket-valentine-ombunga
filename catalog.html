@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse hundreds of student listings on CampusMarket — textbooks, electronics, clothing, furniture and more. Buy from verified students at your university." />
+  <title>Product Catalog — CampusMarket</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =========================================================
+       HEADER / NAV
+       ========================================================= -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <div class="header-inner">
+
+        <a href="index.html" class="logo" aria-label="CampusMarket home">
+          <span class="logo-icon" aria-hidden="true">🛒</span>
+          <span class="logo-text">Campus<span>Market</span></span>
+        </a>
+
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <a href="index.html"   class="nav-link" id="nav-home">Home</a>
+          <a href="catalog.html" class="nav-link active" id="nav-catalog">Browse</a>
+          <a href="index.html#how-it-works" class="nav-link" id="nav-how">How It Works</a>
+          <a href="index.html#categories"   class="nav-link" id="nav-cats">Categories</a>
+          <a href="register.html" class="nav-link" id="nav-reg">Sign Up</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="register.html" class="btn btn-primary" id="header-sell-btn">📦 Sell Something</a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- =========================================================
+         CATALOG HERO
+         ========================================================= -->
+    <section class="catalog-hero" aria-labelledby="catalog-heading">
+      <div class="container catalog-hero-content">
+        <p class="section-eyebrow">All Listings</p>
+        <h1 id="catalog-heading">Browse the Marketplace</h1>
+        <p>Discover great deals from students across campus — textbooks, gadgets, clothing, and much more.</p>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         FILTER / SEARCH BAR
+         ========================================================= -->
+    <div class="catalog-controls" role="search" aria-label="Filter and search listings">
+      <div class="container">
+        <div class="catalog-controls-inner">
+
+          <label for="catalog-search" class="visually-hidden">Search listings</label>
+          <div class="search-bar">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="catalog-search"
+              name="q"
+              placeholder="Search listings (e.g. laptop, biology textbook…)"
+              aria-label="Search listings"
+            />
+          </div>
+
+          <div class="filter-chips" role="group" aria-label="Filter by category">
+            <button class="chip active" id="filter-all">All</button>
+            <button class="chip" id="filter-books">📚 Textbooks</button>
+            <button class="chip" id="filter-electronics">💻 Electronics</button>
+            <button class="chip" id="filter-clothing">👕 Clothing</button>
+            <button class="chip" id="filter-furniture">🪑 Furniture</button>
+            <button class="chip" id="filter-sports">⚽ Sports</button>
+            <button class="chip" id="filter-stationery">✏️ Stationery</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- =========================================================
+         PRODUCT LISTINGS
+         ========================================================= -->
+    <div class="catalog-main">
+      <div class="container">
+
+        <!-- Results bar -->
+        <div class="catalog-results-bar" aria-live="polite">
+          <p>Showing <strong>12 listings</strong></p>
+          <label for="sort-select" class="visually-hidden">Sort by</label>
+          <select class="sort-select" id="sort-select" aria-label="Sort listings">
+            <option value="newest">Newest First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
+
+        <div class="products-grid" id="products-grid" aria-label="Product listings">
+
+          <!-- ── PRODUCT 1 ── -->
+          <article class="product-card" id="product-calculus" aria-labelledby="name-calculus">
+            <div class="product-img-wrap">
+              <img src="images/textbooks.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-hot">Hot</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Textbooks</p>
+              <h2 class="product-name" id="name-calculus">Calculus: Early Transcendentals 9e</h2>
+              <p class="product-desc">Like-new condition. Stewart edition. Used for MAT101/201. Minor highlighting on chapter 3 only. Comes with practice booklet.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 1,200 <span class="original">KSh 2,800</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">AK</div>
+                  <span>Alice K.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-calculus-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 2 ── -->
+          <article class="product-card" id="product-lenovo" aria-labelledby="name-lenovo">
+            <div class="product-img-wrap">
+              <img src="images/electronics.jpg" alt="Lenovo IdeaPad 3" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-sale">Sale</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Electronics</p>
+              <h2 class="product-name" id="name-lenovo">Lenovo IdeaPad 3 — 8GB / 512GB</h2>
+              <p class="product-desc">One semester old. Runs Windows 11 perfectly. Battery lasts 6+ hours. Includes original charger and padded bag.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 28,000 <span class="original">KSh 42,000</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">JO</div>
+                  <span>James O.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-lenovo-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 3 ── -->
+          <article class="product-card" id="product-hoodie" aria-labelledby="name-hoodie">
+            <div class="product-img-wrap">
+              <img src="images/clothing.jpg" alt="University Hoodie" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-new">New</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Clothing</p>
+              <h2 class="product-name" id="name-hoodie">University Hoodie — XL Unisex</h2>
+              <p class="product-desc">Official campus hoodie in XL. Navy blue with white logo. Worn only twice, excellent condition. No stains or pilling.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 850</div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">NM</div>
+                  <span>Naomi M.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-hoodie-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 4 ── -->
+          <article class="product-card" id="product-biology" aria-labelledby="name-biology">
+            <div class="product-img-wrap">
+              <img src="images/textbooks.jpg" alt="Campbell Biology 12th Edition" class="product-img" />
+            </div>
+            <div class="product-body">
+              <p class="product-category">Textbooks</p>
+              <h2 class="product-name" id="name-biology">Campbell Biology 12th Edition</h2>
+              <p class="product-desc">Good condition. All chapters intact. Some pencil notes in margins (can be erased). Great for BIO101 and BIO202.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 1,500 <span class="original">KSh 3,200</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">FW</div>
+                  <span>Faith W.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-biology-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 5 ── -->
+          <article class="product-card" id="product-headphones" aria-labelledby="name-headphones">
+            <div class="product-img-wrap">
+              <img src="images/electronics.jpg" alt="Sony WH-1000XM4 Headphones" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-hot">Hot</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Electronics</p>
+              <h2 class="product-name" id="name-headphones">Sony WH-1000XM4 Headphones</h2>
+              <p class="product-desc">Noise-cancelling, excellent audio quality. 6 months old, in great condition. Comes with carry case and original cable.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 12,500 <span class="original">KSh 22,000</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">DK</div>
+                  <span>David K.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-headphones-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 6 ── -->
+          <article class="product-card" id="product-chair" aria-labelledby="name-chair">
+            <div class="product-img-wrap">
+              <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" />
+            </div>
+            <div class="product-body">
+              <p class="product-category">Furniture</p>
+              <h2 class="product-name" id="name-chair">Ergonomic Study Chair</h2>
+              <p class="product-desc">Adjustable height and lumbar support. Perfect for long study sessions. Minimal wear — leaving campus after graduation.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 3,200 <span class="original">KSh 7,500</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">MO</div>
+                  <span>Mike O.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-chair-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 7 ── -->
+          <article class="product-card" id="product-football" aria-labelledby="name-football">
+            <div class="product-img-wrap">
+              <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-new">New</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Sports</p>
+              <h2 class="product-name" id="name-football">Adidas Match Football — Size 5</h2>
+              <p class="product-desc">Used only a handful of times. Full size 5, proper inflation. Ideal for inter-hostel tournaments or daily kickabouts.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 700 <span class="original">KSh 1,400</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">TL</div>
+                  <span>Tom L.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-football-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 8 ── -->
+          <article class="product-card" id="product-calculator" aria-labelledby="name-calculator">
+            <div class="product-img-wrap">
+              <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" />
+            </div>
+            <div class="product-body">
+              <p class="product-category">Stationery</p>
+              <h2 class="product-name" id="name-calculator">Casio FX-991EX Scientific Calculator</h2>
+              <p class="product-desc">Works perfectly. All functions operational. Still has half battery life. The go-to calculator for engineering and science units.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 1,100 <span class="original">KSh 1,900</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">RA</div>
+                  <span>Ruth A.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-calculator-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 9 ── -->
+          <article class="product-card" id="product-jeans" aria-labelledby="name-jeans">
+            <div class="product-img-wrap">
+              <img src="images/clothing.jpg" alt="Levi's 511 Slim Jeans" class="product-img" />
+            </div>
+            <div class="product-body">
+              <p class="product-category">Clothing</p>
+              <h2 class="product-name" id="name-jeans">Levi's 511 Slim Jeans — W32 L30</h2>
+              <p class="product-desc">Original Levi's. Slim fit, W32 L30. Light wash. Worn a handful of times, no damage. Great casual campus look.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 1,800 <span class="original">KSh 5,500</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">SN</div>
+                  <span>Sam N.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-jeans-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 10 ── -->
+          <article class="product-card" id="product-tablet" aria-labelledby="name-tablet">
+            <div class="product-img-wrap">
+              <img src="images/electronics.jpg" alt="Samsung Galaxy Tab A8" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-sale">Sale</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Electronics</p>
+              <h2 class="product-name" id="name-tablet">Samsung Galaxy Tab A8 — 64GB</h2>
+              <p class="product-desc">10.5" display, perfect for note-taking and e-books. Includes original charger and a slim protective case. Minor scratch on bezel only.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 14,000 <span class="original">KSh 22,500</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">LK</div>
+                  <span>Lena K.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-tablet-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 11 ── -->
+          <article class="product-card" id="product-physics" aria-labelledby="name-physics">
+            <div class="product-img-wrap">
+              <img src="images/textbooks.jpg" alt="University Physics with Modern Physics 15e" class="product-img" />
+            </div>
+            <div class="product-body">
+              <p class="product-category">Textbooks</p>
+              <h2 class="product-name" id="name-physics">University Physics with Modern Physics 15e</h2>
+              <p class="product-desc">Young &amp; Freedman. Very good condition — pages clean, binding tight. Covers PHY101 through PHY301 units comprehensively.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 1,000 <span class="original">KSh 3,000</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">CI</div>
+                  <span>Chloe I.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-physics-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+          <!-- ── PRODUCT 12 ── -->
+          <article class="product-card" id="product-desk-lamp" aria-labelledby="name-desk-lamp">
+            <div class="product-img-wrap">
+              <img src="images/furniture.jpg" alt="LED Desk Lamp with USB Charging Port" class="product-img" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-new">New</span>
+              </div>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Furniture</p>
+              <h2 class="product-name" id="name-desk-lamp">LED Desk Lamp with USB Charging Port</h2>
+              <p class="product-desc">3 brightness modes, touch control, built-in USB port for phone charging. Eye-care tech for late-night study. Works perfectly.</p>
+              <div class="product-footer">
+                <div class="product-price">KSh 600 <span class="original">KSh 1,200</span></div>
+                <div class="product-seller">
+                  <div class="seller-avatar" aria-hidden="true">BP</div>
+                  <span>Ben P.</span>
+                </div>
+              </div>
+              <a href="#" class="btn-card" id="contact-lamp-btn">Contact Seller →</a>
+            </div>
+          </article>
+
+        </div><!-- /products-grid -->
+
+      </div><!-- /container -->
+    </div><!-- /catalog-main -->
+
+
+    <!-- =========================================================
+         CTA
+         ========================================================= -->
+    <section class="cta-section" aria-labelledby="catalog-cta-heading">
+      <div class="container">
+        <h2 id="catalog-cta-heading">Have Something to Sell?</h2>
+        <p>List your item for free and reach hundreds of students on campus right now.</p>
+        <div class="cta-buttons">
+          <a href="register.html" class="btn btn-primary" id="catalog-cta-signup">📦 Post a Free Listing</a>
+          <a href="index.html"    class="btn btn-outline"  id="catalog-cta-home">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="index.html" class="logo" aria-label="CampusMarket home">
+            <span class="logo-icon" aria-hidden="true">🛒</span>
+            <span class="logo-text">Campus<span>Market</span></span>
+          </a>
+          <p>The student-run marketplace connecting campus buyers and sellers since 2024.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <ul class="footer-links">
+            <li><a href="catalog.html" id="footer-browse-link">Browse All</a></li>
+            <li><a href="catalog.html#books" id="footer-books-link">Textbooks</a></li>
+            <li><a href="catalog.html#electronics" id="footer-elec-link">Electronics</a></li>
+            <li><a href="catalog.html#clothing" id="footer-clothing-link">Clothing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Account</h4>
+          <ul class="footer-links">
+            <li><a href="register.html" id="footer-signup-link">Sign Up</a></li>
+            <li><a href="register.html" id="footer-login-link">Log In</a></li>
+            <li><a href="#" id="footer-profile-link">My Profile</a></li>
+            <li><a href="#" id="footer-listings-link">My Listings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#how-it-works" id="footer-how-link">How It Works</a></li>
+            <li><a href="#" id="footer-safety-link">Safety Tips</a></li>
+            <li><a href="#" id="footer-contact-link">Contact Us</a></li>
+            <li><a href="#" id="footer-faq-link">FAQ</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 CampusMarket. Made with ❤️ by students, for students.</p>
+        <p><a href="#" id="footer-privacy-link">Privacy Policy</a> · <a href="#" id="footer-terms-link">Terms of Use</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
