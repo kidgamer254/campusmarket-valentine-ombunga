@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -32,7 +32,7 @@
         <div class="header-actions">
           <a href="register.html" class="btn btn-primary" id="header-sell-btn">📦 Sell Something</a>
         </div>
-
+        
       </div>
     </div>
   </header>
@@ -68,17 +68,18 @@
               name="q"
               placeholder="Search listings (e.g. laptop, biology textbook…)"
               aria-label="Search listings"
+              oninput="filterProducts()"
             />
           </div>
 
           <div class="filter-chips" role="group" aria-label="Filter by category">
-            <button class="chip active" id="filter-all">All</button>
-            <button class="chip" id="filter-books">📚 Textbooks</button>
-            <button class="chip" id="filter-electronics">💻 Electronics</button>
-            <button class="chip" id="filter-clothing">👕 Clothing</button>
-            <button class="chip" id="filter-furniture">🪑 Furniture</button>
-            <button class="chip" id="filter-sports">⚽ Sports</button>
-            <button class="chip" id="filter-stationery">✏️ Stationery</button>
+            <button class="chip active" id="filter-all" data-filter="all" onclick="filterCategory('all', this)">All</button>
+            <button class="chip" id="filter-books" data-filter="textbooks" onclick="filterCategory('textbooks', this)">📚 Textbooks</button>
+            <button class="chip" id="filter-electronics" data-filter="electronics" onclick="filterCategory('electronics', this)">💻 Electronics</button>
+            <button class="chip" id="filter-clothing" data-filter="clothing" onclick="filterCategory('clothing', this)">👕 Clothing</button>
+            <button class="chip" id="filter-furniture" data-filter="furniture" onclick="filterCategory('furniture', this)">🪑 Furniture</button>
+            <button class="chip" id="filter-sports" data-filter="sports" onclick="filterCategory('sports', this)">⚽ Sports</button>
+            <button class="chip" id="filter-stationery" data-filter="stationery" onclick="filterCategory('stationery', this)">✏️ Stationery</button>
           </div>
 
         </div>
@@ -96,7 +97,7 @@
         <div class="catalog-results-bar" aria-live="polite">
           <p>Showing <strong>12 listings</strong></p>
           <label for="sort-select" class="visually-hidden">Sort by</label>
-          <select class="sort-select" id="sort-select" aria-label="Sort listings">
+          <select class="sort-select" id="sort-select" aria-label="Sort listings" onchange="sortProducts()">
             <option value="newest">Newest First</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -106,9 +107,9 @@
         <div class="products-grid" id="products-grid" aria-label="Product listings">
 
           <!-- ── PRODUCT 1 ── -->
-          <article class="product-card" id="product-calculus" aria-labelledby="name-calculus">
+          <article class="product-card" id="product-calculus" data-category="textbooks" data-price="1200" aria-labelledby="name-calculus">
             <div class="product-img-wrap">
-              <img src="images/textbooks.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" />
+              <img src="images/calculus textbook.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Hot</span>
               </div>
@@ -124,14 +125,38 @@
                   <span>Alice K.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-calculus" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculus', -1, 1200, 'total-calculus')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-calculus"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-calculus', 1200, 'total-calculus')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculus', 1, 1200, 'total-calculus')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 1,200</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-calculus">KSh 1,200</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-calculus-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 2 ── -->
-          <article class="product-card" id="product-lenovo" aria-labelledby="name-lenovo">
+          <article class="product-card" id="product-lenovo" data-category="electronics" data-price="28000" aria-labelledby="name-lenovo">
             <div class="product-img-wrap">
-              <img src="images/electronics.jpg" alt="Lenovo IdeaPad 3" class="product-img" />
+              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3" class="product-img" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Sale</span>
               </div>
@@ -147,14 +172,38 @@
                   <span>James O.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-lenovo" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-lenovo', -1, 28000, 'total-lenovo')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-lenovo"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-lenovo', 28000, 'total-lenovo')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-lenovo', 1, 28000, 'total-lenovo')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 28,000</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-lenovo">KSh 28,000</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-lenovo-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 3 ── -->
-          <article class="product-card" id="product-hoodie" aria-labelledby="name-hoodie">
+          <article class="product-card" id="product-hoodie" data-category="clothing" data-price="850" aria-labelledby="name-hoodie">
             <div class="product-img-wrap">
-              <img src="images/clothing.jpg" alt="University Hoodie" class="product-img" />
+              <img src="images/uni hoodie.jpg" alt="University Hoodie" class="product-img" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">New</span>
               </div>
@@ -170,12 +219,36 @@
                   <span>Naomi M.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-hoodie" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-hoodie', -1, 850, 'total-hoodie')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-hoodie"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-hoodie', 850, 'total-hoodie')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-hoodie', 1, 850, 'total-hoodie')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 850</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-hoodie">KSh 850</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-hoodie-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 4 ── -->
-          <article class="product-card" id="product-biology" aria-labelledby="name-biology">
+          <article class="product-card" id="product-biology" data-category="textbooks" data-price="1500" aria-labelledby="name-biology">
             <div class="product-img-wrap">
               <img src="images/textbooks.jpg" alt="Campbell Biology 12th Edition" class="product-img" />
             </div>
@@ -190,12 +263,36 @@
                   <span>Faith W.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-biology" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-biology', -1, 1500, 'total-biology')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-biology"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-biology', 1500, 'total-biology')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-biology', 1, 1500, 'total-biology')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 1,500</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-biology">KSh 1,500</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-biology-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 5 ── -->
-          <article class="product-card" id="product-headphones" aria-labelledby="name-headphones">
+          <article class="product-card" id="product-headphones" data-category="electronics" data-price="12500" aria-labelledby="name-headphones">
             <div class="product-img-wrap">
               <img src="images/electronics.jpg" alt="Sony WH-1000XM4 Headphones" class="product-img" />
               <div class="product-badge-wrap">
@@ -213,12 +310,36 @@
                   <span>David K.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-headphones" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-headphones', -1, 12500, 'total-headphones')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-headphones"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-headphones', 12500, 'total-headphones')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-headphones', 1, 12500, 'total-headphones')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 12,500</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-headphones">KSh 12,500</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-headphones-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 6 ── -->
-          <article class="product-card" id="product-chair" aria-labelledby="name-chair">
+          <article class="product-card" id="product-chair" data-category="furniture" data-price="3200" aria-labelledby="name-chair">
             <div class="product-img-wrap">
               <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" />
             </div>
@@ -233,12 +354,36 @@
                   <span>Mike O.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-chair" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-chair', -1, 3200, 'total-chair')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-chair"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-chair', 3200, 'total-chair')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-chair', 1, 3200, 'total-chair')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 3,200</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-chair">KSh 3,200</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-chair-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 7 ── -->
-          <article class="product-card" id="product-football" aria-labelledby="name-football">
+          <article class="product-card" id="product-football" data-category="sports" data-price="700" aria-labelledby="name-football">
             <div class="product-img-wrap">
               <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" />
               <div class="product-badge-wrap">
@@ -256,12 +401,36 @@
                   <span>Tom L.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-football" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-football', -1, 700, 'total-football')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-football"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-football', 700, 'total-football')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-football', 1, 700, 'total-football')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 700</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-football">KSh 700</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-football-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 8 ── -->
-          <article class="product-card" id="product-calculator" aria-labelledby="name-calculator">
+          <article class="product-card" id="product-calculator" data-category="stationery" data-price="1100" aria-labelledby="name-calculator">
             <div class="product-img-wrap">
               <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" />
             </div>
@@ -276,12 +445,36 @@
                   <span>Ruth A.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-calculator" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculator', -1, 1100, 'total-calculator')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-calculator"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-calculator', 1100, 'total-calculator')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculator', 1, 1100, 'total-calculator')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 1,100</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-calculator">KSh 1,100</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-calculator-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 9 ── -->
-          <article class="product-card" id="product-jeans" aria-labelledby="name-jeans">
+          <article class="product-card" id="product-jeans" data-category="clothing" data-price="1800" aria-labelledby="name-jeans">
             <div class="product-img-wrap">
               <img src="images/clothing.jpg" alt="Levi's 511 Slim Jeans" class="product-img" />
             </div>
@@ -296,14 +489,38 @@
                   <span>Sam N.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-jeans" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-jeans', -1, 1800, 'total-jeans')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-jeans"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-jeans', 1800, 'total-jeans')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-jeans', 1, 1800, 'total-jeans')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 1,800</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-jeans">KSh 1,800</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-jeans-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 10 ── -->
-          <article class="product-card" id="product-tablet" aria-labelledby="name-tablet">
+          <article class="product-card" id="product-tablet" data-category="electronics" data-price="14000" aria-labelledby="name-tablet">
             <div class="product-img-wrap">
-              <img src="images/electronics.jpg" alt="Samsung Galaxy Tab A8" class="product-img" />
+              <img src="images/samsung.jpg" alt="Samsung Galaxy Tab A8" class="product-img" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Sale</span>
               </div>
@@ -319,14 +536,38 @@
                   <span>Lena K.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-tablet" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-tablet', -1, 14000, 'total-tablet')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-tablet"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-tablet', 14000, 'total-tablet')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-tablet', 1, 14000, 'total-tablet')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 14,000</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-tablet">KSh 14,000</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-tablet-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 11 ── -->
-          <article class="product-card" id="product-physics" aria-labelledby="name-physics">
+          <article class="product-card" id="product-physics" data-category="textbooks" data-price="1000" aria-labelledby="name-physics">
             <div class="product-img-wrap">
-              <img src="images/textbooks.jpg" alt="University Physics with Modern Physics 15e" class="product-img" />
+              <img src="images/physics.jpg" alt="University Physics with Modern Physics 15e" class="product-img" />
             </div>
             <div class="product-body">
               <p class="product-category">Textbooks</p>
@@ -339,12 +580,36 @@
                   <span>Chloe I.</span>
                 </div>
               </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-physics" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-physics', -1, 1000, 'total-physics')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-physics"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-physics', 1000, 'total-physics')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-physics', 1, 1000, 'total-physics')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 1,000</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-physics">KSh 1,000</strong>
+                </div>
+              </div>
+
               <a href="#" class="btn-card" id="contact-physics-btn">Contact Seller →</a>
             </div>
           </article>
 
           <!-- ── PRODUCT 12 ── -->
-          <article class="product-card" id="product-desk-lamp" aria-labelledby="name-desk-lamp">
+          <article class="product-card" id="product-desk-lamp" data-category="furniture" data-price="600" aria-labelledby="name-desk-lamp">
             <div class="product-img-wrap">
               <img src="images/furniture.jpg" alt="LED Desk Lamp with USB Charging Port" class="product-img" />
               <div class="product-badge-wrap">
@@ -360,6 +625,29 @@
                 <div class="product-seller">
                   <div class="seller-avatar" aria-hidden="true">BP</div>
                   <span>Ben P.</span>
+                </div>
+              </div>
+              <!-- Quantity Calculation (Live Running Total) -->
+              <div class="product-calc-box">
+                <div class="calc-row">
+                  <label for="qty-desk-lamp" class="calc-label">Qty:</label>
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-desk-lamp', -1, 600, 'total-desk-lamp')" aria-label="Decrease quantity">−</button>
+                  <input
+                    type="number"
+                    id="qty-desk-lamp"
+                    class="calc-qty-input"
+                    value="1"
+                    min="1"
+                    max="99"
+                    aria-label="Select quantity"
+                    oninput="calculateProductTotal('qty-desk-lamp', 600, 'total-desk-lamp')"
+                  />
+                  <button type="button" class="btn-qty" onclick="changeQty('qty-desk-lamp', 1, 600, 'total-desk-lamp')" aria-label="Increase quantity">+</button>
+                  <span class="calc-rate">× KSh 600</span>
+                </div>
+                <div class="calc-total-row">
+                  <span>Running Total:</span>
+                  <strong class="calc-total-price" id="total-desk-lamp">KSh 600</strong>
                 </div>
               </div>
               <a href="#" class="btn-card" id="contact-lamp-btn">Contact Seller →</a>
@@ -443,5 +731,6 @@
     </div>
   </footer>
 
+  <script src="app.js"></script>
 </body>
 </html>
