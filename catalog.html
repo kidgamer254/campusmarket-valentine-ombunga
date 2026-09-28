@@ -33,6 +33,11 @@
         </nav>
 
         <div class="header-actions">
+          <button type="button" class="btn-cart-header" id="header-cart-btn" onclick="toggleCart()" aria-label="Shopping Cart">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-text">Cart</span>
+            <span class="cart-badge">0</span>
+          </button>
           <a href="register.html" class="btn btn-primary" id="header-sell-btn">📦 Sell Something</a>
         </div>
         
@@ -152,7 +157,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-calculus-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-calculus-btn" onclick="addToCart('product-calculus', 'qty-calculus')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-calculus', 'qty-calculus'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -199,7 +207,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-lenovo-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-lenovo-btn" onclick="addToCart('product-lenovo', 'qty-lenovo')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-lenovo', 'qty-lenovo'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -246,7 +257,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-hoodie-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-hoodie-btn" onclick="addToCart('product-hoodie', 'qty-hoodie')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-hoodie', 'qty-hoodie'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -290,7 +304,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-biology-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-biology-btn" onclick="addToCart('product-biology', 'qty-biology')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-biology', 'qty-biology'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -337,7 +354,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-headphones-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-headphones-btn" onclick="addToCart('product-headphones', 'qty-headphones')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-headphones', 'qty-headphones'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -381,7 +401,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-chair-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-chair-btn" onclick="addToCart('product-chair', 'qty-chair')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-chair', 'qty-chair'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -428,7 +451,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-football-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-football-btn" onclick="addToCart('product-football', 'qty-football')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-football', 'qty-football'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -472,7 +498,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-calculator-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-calculator-btn" onclick="addToCart('product-calculator', 'qty-calculator')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-calculator', 'qty-calculator'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -516,7 +545,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-jeans-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-jeans-btn" onclick="addToCart('product-jeans', 'qty-jeans')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-jeans', 'qty-jeans'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -563,7 +595,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-tablet-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-tablet-btn" onclick="addToCart('product-tablet', 'qty-tablet')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-tablet', 'qty-tablet'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -607,7 +642,10 @@
                 </div>
               </div>
 
-              <a href="#" class="btn-card" id="contact-physics-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-physics-btn" onclick="addToCart('product-physics', 'qty-physics')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-physics', 'qty-physics'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 
@@ -653,7 +691,10 @@
                   <strong class="calc-total-price" id="total-desk-lamp">KSh 600</strong>
                 </div>
               </div>
-              <a href="#" class="btn-card" id="contact-lamp-btn">Contact Seller →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" id="cart-lamp-btn" onclick="addToCart('product-desk-lamp', 'qty-desk-lamp')">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-desk-lamp', 'qty-desk-lamp'); openCheckoutModal();">Buy Now</button>
+              </div>
             </div>
           </article>
 

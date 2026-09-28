@@ -38,6 +38,11 @@
 
         <!-- Header Actions -->
         <div class="header-actions">
+          <button type="button" class="btn-cart-header" id="header-cart-btn" onclick="toggleCart()" aria-label="Shopping Cart">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-text">Cart</span>
+            <span class="cart-badge">0</span>
+          </button>
           <a href="catalog.html" class="btn btn-primary" id="header-browse-btn">Browse Listings</a>
         </div>
 
@@ -202,7 +207,10 @@
                   <span>Alice K.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-calculus-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-calculus-textbook', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-calculus" class="btn-card btn-card-secondary" id="view-calculus-btn">Details →</a>
+              </div>
             </div>
           </article>
 
@@ -227,7 +235,10 @@
                   <span>James O.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-laptop-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-laptop', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-lenovo" class="btn-card btn-card-secondary" id="view-laptop-btn">Details →</a>
+              </div>
             </div>
           </article>
 
@@ -252,7 +263,10 @@
                   <span>Naomi M.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-hoodie-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-hoodie', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-hoodie" class="btn-card btn-card-secondary" id="view-hoodie-btn">Details →</a>
+              </div>
             </div>
           </article>
 
@@ -277,7 +291,10 @@
                   <span>Mike O.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-chair-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-chair', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-chair" class="btn-card btn-card-secondary" id="view-chair-btn">Details →</a>
+              </div>
             </div>
           </article>
 
@@ -302,7 +319,10 @@
                   <span>Tom L.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-football-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-football', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-football" class="btn-card btn-card-secondary" id="view-football-btn">Details →</a>
+              </div>
             </div>
           </article>
 
@@ -327,7 +347,10 @@
                   <span>Ruth A.</span>
                 </div>
               </div>
-              <a href="catalog.html" class="btn-card" id="view-calculator-btn">View Listing →</a>
+              <div class="card-actions-group">
+                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-calculator', 1)">🛒 Add to Cart</button>
+                <a href="catalog.html#product-calculator" class="btn-card btn-card-secondary" id="view-calculator-btn">Details →</a>
+              </div>
             </div>
           </article></div>
 
