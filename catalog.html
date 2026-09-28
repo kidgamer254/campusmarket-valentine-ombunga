@@ -33,7 +33,7 @@
         </nav>
 
         <div class="header-actions">
-          <button type="button" class="btn-cart-header" id="header-cart-btn" onclick="toggleCart()" aria-label="Shopping Cart">
+          <button type="button" class="btn-cart-header" id="header-cart-btn" aria-label="Shopping Cart">
             <span class="cart-icon">🛒</span>
             <span class="cart-text">Cart</span>
             <span class="cart-badge">0</span>
@@ -61,7 +61,7 @@
 
 
     <!-- =========================================================
-         FILTER / SEARCH BAR
+         FILTER / SEARCH BAR (WEEK 2)
          ========================================================= -->
     <div class="catalog-controls" role="search" aria-label="Filter and search listings">
       <div class="container">
@@ -76,18 +76,17 @@
               name="q"
               placeholder="Search listings (e.g. laptop, biology textbook…)"
               aria-label="Search listings"
-              oninput="filterProducts()"
             />
           </div>
 
           <div class="filter-chips" role="group" aria-label="Filter by category">
-            <button class="chip active" id="filter-all" data-filter="all" onclick="filterCategory('all', this)">All</button>
-            <button class="chip" id="filter-books" data-filter="textbooks" onclick="filterCategory('textbooks', this)">📚 Textbooks</button>
-            <button class="chip" id="filter-electronics" data-filter="electronics" onclick="filterCategory('electronics', this)">💻 Electronics</button>
-            <button class="chip" id="filter-clothing" data-filter="clothing" onclick="filterCategory('clothing', this)">👕 Clothing</button>
-            <button class="chip" id="filter-furniture" data-filter="furniture" onclick="filterCategory('furniture', this)">🪑 Furniture</button>
-            <button class="chip" id="filter-sports" data-filter="sports" onclick="filterCategory('sports', this)">⚽ Sports</button>
-            <button class="chip" id="filter-stationery" data-filter="stationery" onclick="filterCategory('stationery', this)">✏️ Stationery</button>
+            <button type="button" class="chip active" id="filter-all" data-filter="all">All</button>
+            <button type="button" class="chip" id="filter-books" data-filter="textbooks">📚 Textbooks</button>
+            <button type="button" class="chip" id="filter-electronics" data-filter="electronics">💻 Electronics</button>
+            <button type="button" class="chip" id="filter-clothing" data-filter="clothing">👕 Clothing</button>
+            <button type="button" class="chip" id="filter-furniture" data-filter="furniture">🪑 Furniture</button>
+            <button type="button" class="chip" id="filter-sports" data-filter="sports">⚽ Sports</button>
+            <button type="button" class="chip" id="filter-stationery" data-filter="stationery">✏️ Stationery</button>
           </div>
 
         </div>
@@ -96,7 +95,40 @@
 
 
     <!-- =========================================================
-         PRODUCT LISTINGS
+         INTERACTIVE SHOWCASE GALLERY (WEEK 4 - DRIVEN BY WEEK 2 FILTER)
+         ========================================================= -->
+    <div class="container">
+      <section class="catalog-showcase" id="catalog-showcase" aria-labelledby="showcase-heading">
+        <div class="showcase-header">
+          <div class="showcase-title-area">
+            <span class="showcase-badge">Interactive Slideshow</span>
+            <h2 id="showcase-heading" class="showcase-heading">Featured Showcase</h2>
+            <p class="showcase-status" id="showcase-status">Filtered to: <strong>All Products</strong> (<span id="showcase-count-text">12 items in rotation</span>)</p>
+          </div>
+          <div class="showcase-controls">
+            <span class="showcase-counter" id="showcase-counter" aria-live="polite">Slide 1 of 12</span>
+            <div class="showcase-nav-group">
+              <button type="button" class="btn-showcase-nav" id="showcase-prev-btn" aria-label="Previous showcase item">‹</button>
+              <button type="button" class="btn-showcase-nav" id="showcase-next-btn" aria-label="Next showcase item">›</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-stage" id="showcase-stage" tabindex="0" aria-label="Product Showcase Slideshow. Use arrow keys or buttons to navigate.">
+          <div class="showcase-card" id="showcase-active-card">
+            <!-- Dynamically populated and transitioned by app.js based on activeFilteredProducts -->
+          </div>
+        </div>
+
+        <div class="showcase-dots" id="showcase-dots" role="tablist" aria-label="Showcase slides navigation">
+          <!-- Dynamically generated dot buttons -->
+        </div>
+      </section>
+    </div>
+
+
+    <!-- =========================================================
+         PRODUCT LISTINGS GRID
          ========================================================= -->
     <div class="catalog-main">
       <div class="container">
@@ -105,7 +137,7 @@
         <div class="catalog-results-bar" aria-live="polite">
           <p>Showing <strong>12 listings</strong></p>
           <label for="sort-select" class="visually-hidden">Sort by</label>
-          <select class="sort-select" id="sort-select" aria-label="Sort listings" onchange="sortProducts()">
+          <select class="sort-select" id="sort-select" aria-label="Sort listings">
             <option value="newest">Newest First</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -114,17 +146,17 @@
 
         <div class="products-grid" id="products-grid" aria-label="Product listings">
 
-          <!-- ── PRODUCT 1 ── -->
-          <article class="product-card" id="product-calculus" data-category="textbooks" data-price="1200" aria-labelledby="name-calculus">
+          <!-- ── Calculus: Early Transcendentals 9e ── -->
+          <article class="product-card" id="product-calculus" data-category="textbooks" data-price="1200" aria-labelledby="name-product-calculus">
             <div class="product-img-wrap">
-              <img src="images/calculus textbook.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/calculus textbook.jpg" alt="Calculus Early Transcendentals 9th Edition textbook by Stewart with blue cover in like-new condition" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Hot</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Textbooks</p>
-              <h2 class="product-name" id="name-calculus">Calculus: Early Transcendentals 9e</h2>
+              <h2 class="product-name" id="name-product-calculus">Calculus: Early Transcendentals 9e</h2>
               <p class="product-desc">Like-new condition. Stewart edition. Used for MAT101/201. Minor highlighting on chapter 3 only. Comes with practice booklet.</p>
               <div class="product-footer">
                 <div class="product-price">KSh 1,200 <span class="original">KSh 2,800</span></div>
@@ -133,11 +165,12 @@
                   <span>Alice K.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-calculus" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculus', -1, 1200, 'total-calculus')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-calculus" data-price="1200" data-output="total-calculus" data-error="calc-error-calculus" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-calculus"
@@ -145,12 +178,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-calculus', 1200, 'total-calculus')"
+                    data-price="1200"
+                    data-output="total-calculus"
+                    data-error="calc-error-calculus"
+                    aria-label="Select quantity for Calculus: Early Transcendentals 9e"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculus', 1, 1200, 'total-calculus')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-calculus" data-price="1200" data-output="total-calculus" data-error="calc-error-calculus" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 1,200</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-calculus" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-calculus">KSh 1,200</strong>
@@ -158,23 +195,23 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-calculus-btn" onclick="addToCart('product-calculus', 'qty-calculus')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-calculus', 'qty-calculus'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-calculus" data-qty-input="qty-calculus">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-calculus" data-qty-input="qty-calculus">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 2 ── -->
-          <article class="product-card" id="product-lenovo" data-category="electronics" data-price="28000" aria-labelledby="name-lenovo">
+          <!-- ── Lenovo IdeaPad 3 — 8GB / 512GB ── -->
+          <article class="product-card" id="product-lenovo" data-category="electronics" data-price="28000" aria-labelledby="name-product-lenovo">
             <div class="product-img-wrap">
-              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3 student laptop computer with slim grey chassis and charger" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Sale</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Electronics</p>
-              <h2 class="product-name" id="name-lenovo">Lenovo IdeaPad 3 — 8GB / 512GB</h2>
+              <h2 class="product-name" id="name-product-lenovo">Lenovo IdeaPad 3 — 8GB / 512GB</h2>
               <p class="product-desc">One semester old. Runs Windows 11 perfectly. Battery lasts 6+ hours. Includes original charger and padded bag.</p>
               <div class="product-footer">
                 <div class="product-price">KSh 28,000 <span class="original">KSh 42,000</span></div>
@@ -183,11 +220,12 @@
                   <span>James O.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-lenovo" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-lenovo', -1, 28000, 'total-lenovo')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-lenovo" data-price="28000" data-output="total-lenovo" data-error="calc-error-lenovo" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-lenovo"
@@ -195,12 +233,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-lenovo', 28000, 'total-lenovo')"
+                    data-price="28000"
+                    data-output="total-lenovo"
+                    data-error="calc-error-lenovo"
+                    aria-label="Select quantity for Lenovo IdeaPad 3 — 8GB / 512GB"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-lenovo', 1, 28000, 'total-lenovo')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-lenovo" data-price="28000" data-output="total-lenovo" data-error="calc-error-lenovo" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 28,000</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-lenovo" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-lenovo">KSh 28,000</strong>
@@ -208,24 +250,24 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-lenovo-btn" onclick="addToCart('product-lenovo', 'qty-lenovo')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-lenovo', 'qty-lenovo'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-lenovo" data-qty-input="qty-lenovo">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-lenovo" data-qty-input="qty-lenovo">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 3 ── -->
-          <article class="product-card" id="product-hoodie" data-category="clothing" data-price="850" aria-labelledby="name-hoodie">
+          <!-- ── University Branded Hoodie — Size M ── -->
+          <article class="product-card" id="product-hoodie" data-category="clothing" data-price="850" aria-labelledby="name-product-hoodie">
             <div class="product-img-wrap">
-              <img src="images/uni hoodie.jpg" alt="University Hoodie" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/uni hoodie.jpg" alt="Navy blue university campus branded pullover hoodie size medium with white emblem" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">New</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Clothing</p>
-              <h2 class="product-name" id="name-hoodie">University Hoodie — XL Unisex</h2>
-              <p class="product-desc">Official campus hoodie in XL. Navy blue with white logo. Worn only twice, excellent condition. No stains or pilling.</p>
+              <h2 class="product-name" id="name-product-hoodie">University Branded Hoodie — Size M</h2>
+              <p class="product-desc">Official campus hoodie, navy blue, unisex medium. Worn only twice, freshly laundered, zero fading or pilling.</p>
               <div class="product-footer">
                 <div class="product-price">KSh 850</div>
                 <div class="product-seller">
@@ -233,11 +275,12 @@
                   <span>Naomi M.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-hoodie" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-hoodie', -1, 850, 'total-hoodie')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-hoodie" data-price="850" data-output="total-hoodie" data-error="calc-error-hoodie" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-hoodie"
@@ -245,12 +288,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-hoodie', 850, 'total-hoodie')"
+                    data-price="850"
+                    data-output="total-hoodie"
+                    data-error="calc-error-hoodie"
+                    aria-label="Select quantity for University Branded Hoodie — Size M"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-hoodie', 1, 850, 'total-hoodie')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-hoodie" data-price="850" data-output="total-hoodie" data-error="calc-error-hoodie" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 850</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-hoodie" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-hoodie">KSh 850</strong>
@@ -258,33 +305,35 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-hoodie-btn" onclick="addToCart('product-hoodie', 'qty-hoodie')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-hoodie', 'qty-hoodie'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-hoodie" data-qty-input="qty-hoodie">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-hoodie" data-qty-input="qty-hoodie">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 4 ── -->
-          <article class="product-card" id="product-biology" data-category="textbooks" data-price="1500" aria-labelledby="name-biology">
+          <!-- ── Campbell Biology (11th Edition) ── -->
+          <article class="product-card" id="product-biology" data-category="textbooks" data-price="1500" aria-labelledby="name-product-biology">
             <div class="product-img-wrap">
-              <img src="images/textbooks.jpg" alt="Campbell Biology 12th Edition" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/textbooks.jpg" alt="Campbell Biology 11th edition hardcover textbook with flower cover photo for biological sciences" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+
             </div>
             <div class="product-body">
               <p class="product-category">Textbooks</p>
-              <h2 class="product-name" id="name-biology">Campbell Biology 12th Edition</h2>
-              <p class="product-desc">Good condition. All chapters intact. Some pencil notes in margins (can be erased). Great for BIO101 and BIO202.</p>
+              <h2 class="product-name" id="name-product-biology">Campbell Biology (11th Edition)</h2>
+              <p class="product-desc">Comprehensive biology textbook used for BIO101 & BIO102. Hardcover, no missing pages, includes digital code card.</p>
               <div class="product-footer">
                 <div class="product-price">KSh 1,500 <span class="original">KSh 3,200</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">FW</div>
-                  <span>Faith W.</span>
+                  <div class="seller-avatar" aria-hidden="true">DK</div>
+                  <span>David K.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-biology" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-biology', -1, 1500, 'total-biology')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-biology" data-price="1500" data-output="total-biology" data-error="calc-error-biology" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-biology"
@@ -292,12 +341,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-biology', 1500, 'total-biology')"
+                    data-price="1500"
+                    data-output="total-biology"
+                    data-error="calc-error-biology"
+                    aria-label="Select quantity for Campbell Biology (11th Edition)"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-biology', 1, 1500, 'total-biology')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-biology" data-price="1500" data-output="total-biology" data-error="calc-error-biology" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 1,500</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-biology" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-biology">KSh 1,500</strong>
@@ -305,36 +358,37 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-biology-btn" onclick="addToCart('product-biology', 'qty-biology')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-biology', 'qty-biology'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-biology" data-qty-input="qty-biology">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-biology" data-qty-input="qty-biology">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 5 ── -->
-          <article class="product-card" id="product-headphones" data-category="electronics" data-price="12500" aria-labelledby="name-headphones">
+          <!-- ── Sony WH-CH520 Wireless Headphones ── -->
+          <article class="product-card" id="product-headphones" data-category="electronics" data-price="12500" aria-labelledby="name-product-headphones">
             <div class="product-img-wrap">
-              <img src="images/electronics.jpg" alt="Sony WH-1000XM4 Headphones" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/electronics.jpg" alt="Sony WH-CH520 wireless on-ear Bluetooth headphones in matte black" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
-                <span class="badge badge-hot">Hot</span>
+                <span class="badge badge-hot">Popular</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Electronics</p>
-              <h2 class="product-name" id="name-headphones">Sony WH-1000XM4 Headphones</h2>
-              <p class="product-desc">Noise-cancelling, excellent audio quality. 6 months old, in great condition. Comes with carry case and original cable.</p>
+              <h2 class="product-name" id="name-product-headphones">Sony WH-CH520 Wireless Headphones</h2>
+              <p class="product-desc">Bluetooth 5.2, 50-hour battery life, multipoint connection. Like new in box with USB-C cable and documentation.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 12,500 <span class="original">KSh 22,000</span></div>
+                <div class="product-price">KSh 12,500 <span class="original">KSh 18,000</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">DK</div>
-                  <span>David K.</span>
+                  <div class="seller-avatar" aria-hidden="true">EN</div>
+                  <span>Eva N.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-headphones" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-headphones', -1, 12500, 'total-headphones')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-headphones" data-price="12500" data-output="total-headphones" data-error="calc-error-headphones" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-headphones"
@@ -342,12 +396,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-headphones', 12500, 'total-headphones')"
+                    data-price="12500"
+                    data-output="total-headphones"
+                    data-error="calc-error-headphones"
+                    aria-label="Select quantity for Sony WH-CH520 Wireless Headphones"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-headphones', 1, 12500, 'total-headphones')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-headphones" data-price="12500" data-output="total-headphones" data-error="calc-error-headphones" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 12,500</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-headphones" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-headphones">KSh 12,500</strong>
@@ -355,33 +413,37 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-headphones-btn" onclick="addToCart('product-headphones', 'qty-headphones')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-headphones', 'qty-headphones'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-headphones" data-qty-input="qty-headphones">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-headphones" data-qty-input="qty-headphones">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 6 ── -->
-          <article class="product-card" id="product-chair" data-category="furniture" data-price="3200" aria-labelledby="name-chair">
+          <!-- ── Ergonomic Study Desk Chair ── -->
+          <article class="product-card" id="product-chair" data-category="furniture" data-price="3200" aria-labelledby="name-product-chair">
             <div class="product-img-wrap">
-              <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/furniture.jpg" alt="Ergonomic mesh study desk chair with adjustable lumbar support and height lever" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-sale">Sale</span>
+              </div>
             </div>
             <div class="product-body">
               <p class="product-category">Furniture</p>
-              <h2 class="product-name" id="name-chair">Ergonomic Study Chair</h2>
-              <p class="product-desc">Adjustable height and lumbar support. Perfect for long study sessions. Minimal wear — leaving campus after graduation.</p>
+              <h2 class="product-name" id="name-product-chair">Ergonomic Study Desk Chair</h2>
+              <p class="product-desc">Breathable mesh back with adjustable lumbar support, 360° swivel, smooth casters, and height lever. Very comfortable.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 3,200 <span class="original">KSh 7,500</span></div>
+                <div class="product-price">KSh 3,200 <span class="original">KSh 6,500</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">MO</div>
-                  <span>Mike O.</span>
+                  <div class="seller-avatar" aria-hidden="true">FM</div>
+                  <span>Francis M.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-chair" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-chair', -1, 3200, 'total-chair')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-chair" data-price="3200" data-output="total-chair" data-error="calc-error-chair" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-chair"
@@ -389,12 +451,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-chair', 3200, 'total-chair')"
+                    data-price="3200"
+                    data-output="total-chair"
+                    data-error="calc-error-chair"
+                    aria-label="Select quantity for Ergonomic Study Desk Chair"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-chair', 1, 3200, 'total-chair')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-chair" data-price="3200" data-output="total-chair" data-error="calc-error-chair" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 3,200</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-chair" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-chair">KSh 3,200</strong>
@@ -402,36 +468,37 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-chair-btn" onclick="addToCart('product-chair', 'qty-chair')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-chair', 'qty-chair'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-chair" data-qty-input="qty-chair">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-chair" data-qty-input="qty-chair">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 7 ── -->
-          <article class="product-card" id="product-football" data-category="sports" data-price="700" aria-labelledby="name-football">
+          <!-- ── Nike Pitch Football — Size 5 ── -->
+          <article class="product-card" id="product-football" data-category="sports" data-price="700" aria-labelledby="name-product-football">
             <div class="product-img-wrap">
-              <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/sports.jpg" alt="Nike Pitch football size 5 official campus league match ball" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
-                <span class="badge badge-new">New</span>
+                <span class="badge badge-new">Fresh</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Sports</p>
-              <h2 class="product-name" id="name-football">Adidas Match Football — Size 5</h2>
-              <p class="product-desc">Used only a handful of times. Full size 5, proper inflation. Ideal for inter-hostel tournaments or daily kickabouts.</p>
+              <h2 class="product-name" id="name-product-football">Nike Pitch Football — Size 5</h2>
+              <p class="product-desc">Campus league official match ball, pumped and inspected. Used 3 times on astro turf. Excellent grip and air retention.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 700 <span class="original">KSh 1,400</span></div>
+                <div class="product-price">KSh 700 <span class="original">KSh 1,500</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">TL</div>
-                  <span>Tom L.</span>
+                  <div class="seller-avatar" aria-hidden="true">GT</div>
+                  <span>George T.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-football" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-football', -1, 700, 'total-football')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-football" data-price="700" data-output="total-football" data-error="calc-error-football" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-football"
@@ -439,12 +506,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-football', 700, 'total-football')"
+                    data-price="700"
+                    data-output="total-football"
+                    data-error="calc-error-football"
+                    aria-label="Select quantity for Nike Pitch Football — Size 5"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-football', 1, 700, 'total-football')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-football" data-price="700" data-output="total-football" data-error="calc-error-football" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 700</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-football" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-football">KSh 700</strong>
@@ -452,33 +523,37 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-football-btn" onclick="addToCart('product-football', 'qty-football')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-football', 'qty-football'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-football" data-qty-input="qty-football">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-football" data-qty-input="qty-football">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 8 ── -->
-          <article class="product-card" id="product-calculator" data-category="stationery" data-price="1100" aria-labelledby="name-calculator">
+          <!-- ── Casio fx-991EX ClassWiz Calculator ── -->
+          <article class="product-card" id="product-calculator" data-category="stationery" data-price="1100" aria-labelledby="name-product-calculator">
             <div class="product-img-wrap">
-              <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/stationery.jpg" alt="Casio fx-991EX ClassWiz scientific calculator approved for campus exams" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <div class="product-badge-wrap">
+                <span class="badge badge-hot">Essential</span>
+              </div>
             </div>
             <div class="product-body">
               <p class="product-category">Stationery</p>
-              <h2 class="product-name" id="name-calculator">Casio FX-991EX Scientific Calculator</h2>
-              <p class="product-desc">Works perfectly. All functions operational. Still has half battery life. The go-to calculator for engineering and science units.</p>
+              <h2 class="product-name" id="name-product-calculator">Casio fx-991EX ClassWiz Calculator</h2>
+              <p class="product-desc">Approved for university engineering, calculus, and physics exams. High-resolution display, dual solar/battery power.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 1,100 <span class="original">KSh 1,900</span></div>
+                <div class="product-price">KSh 1,100 <span class="original">KSh 2,000</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">RA</div>
-                  <span>Ruth A.</span>
+                  <div class="seller-avatar" aria-hidden="true">HA</div>
+                  <span>Hellen A.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-calculator" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculator', -1, 1100, 'total-calculator')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-calculator" data-price="1100" data-output="total-calculator" data-error="calc-error-calculator" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-calculator"
@@ -486,12 +561,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-calculator', 1100, 'total-calculator')"
+                    data-price="1100"
+                    data-output="total-calculator"
+                    data-error="calc-error-calculator"
+                    aria-label="Select quantity for Casio fx-991EX ClassWiz Calculator"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-calculator', 1, 1100, 'total-calculator')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-calculator" data-price="1100" data-output="total-calculator" data-error="calc-error-calculator" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 1,100</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-calculator" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-calculator">KSh 1,100</strong>
@@ -499,33 +578,35 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-calculator-btn" onclick="addToCart('product-calculator', 'qty-calculator')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-calculator', 'qty-calculator'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-calculator" data-qty-input="qty-calculator">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-calculator" data-qty-input="qty-calculator">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 9 ── -->
-          <article class="product-card" id="product-jeans" data-category="clothing" data-price="1800" aria-labelledby="name-jeans">
+          <!-- ── Levi's 511 Slim Jeans — Size 32 ── -->
+          <article class="product-card" id="product-jeans" data-category="clothing" data-price="1800" aria-labelledby="name-product-jeans">
             <div class="product-img-wrap">
-              <img src="images/clothing.jpg" alt="Levi's 511 Slim Jeans" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/clothing.jpg" alt="Levi's 511 slim-fit dark wash blue denim jeans size 32 laid flat" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+
             </div>
             <div class="product-body">
               <p class="product-category">Clothing</p>
-              <h2 class="product-name" id="name-jeans">Levi's 511 Slim Jeans — W32 L30</h2>
-              <p class="product-desc">Original Levi's. Slim fit, W32 L30. Light wash. Worn a handful of times, no damage. Great casual campus look.</p>
+              <h2 class="product-name" id="name-product-jeans">Levi's 511 Slim Jeans — Size 32</h2>
+              <p class="product-desc">Classic dark wash, 99% cotton 1% elastane for comfortable stretch. Worn twice, hemmed professionally to 30L.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 1,800 <span class="original">KSh 5,500</span></div>
+                <div class="product-price">KSh 1,800 <span class="original">KSh 2,800</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">SN</div>
-                  <span>Sam N.</span>
+                  <div class="seller-avatar" aria-hidden="true">IM</div>
+                  <span>Ian M.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-jeans" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-jeans', -1, 1800, 'total-jeans')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-jeans" data-price="1800" data-output="total-jeans" data-error="calc-error-jeans" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-jeans"
@@ -533,12 +614,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-jeans', 1800, 'total-jeans')"
+                    data-price="1800"
+                    data-output="total-jeans"
+                    data-error="calc-error-jeans"
+                    aria-label="Select quantity for Levi's 511 Slim Jeans — Size 32"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-jeans', 1, 1800, 'total-jeans')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-jeans" data-price="1800" data-output="total-jeans" data-error="calc-error-jeans" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 1,800</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-jeans" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-jeans">KSh 1,800</strong>
@@ -546,36 +631,37 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-jeans-btn" onclick="addToCart('product-jeans', 'qty-jeans')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-jeans', 'qty-jeans'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-jeans" data-qty-input="qty-jeans">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-jeans" data-qty-input="qty-jeans">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 10 ── -->
-          <article class="product-card" id="product-tablet" data-category="electronics" data-price="14000" aria-labelledby="name-tablet">
+          <!-- ── Samsung Galaxy Tab A8 64GB ── -->
+          <article class="product-card" id="product-tablet" data-category="electronics" data-price="14000" aria-labelledby="name-product-tablet">
             <div class="product-img-wrap">
-              <img src="images/samsung.jpg" alt="Samsung Galaxy Tab A8" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/samsung.jpg" alt="Samsung Galaxy Tab A8 10.5 inch Android tablet in dark grey with touchscreen display" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
-                <span class="badge badge-sale">Sale</span>
+                <span class="badge badge-sale">Hot Deal</span>
               </div>
             </div>
             <div class="product-body">
               <p class="product-category">Electronics</p>
-              <h2 class="product-name" id="name-tablet">Samsung Galaxy Tab A8 — 64GB</h2>
-              <p class="product-desc">10.5" display, perfect for note-taking and e-books. Includes original charger and a slim protective case. Minor scratch on bezel only.</p>
+              <h2 class="product-name" id="name-product-tablet">Samsung Galaxy Tab A8 64GB</h2>
+              <p class="product-desc">10.5" display, octa-core processor, stereo speakers. Excellent for reading PDFs and note-taking. Includes folio cover.</p>
               <div class="product-footer">
-                <div class="product-price">KSh 14,000 <span class="original">KSh 22,500</span></div>
+                <div class="product-price">KSh 14,000 <span class="original">KSh 22,000</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">LK</div>
-                  <span>Lena K.</span>
+                  <div class="seller-avatar" aria-hidden="true">JD</div>
+                  <span>Jane D.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-tablet" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-tablet', -1, 14000, 'total-tablet')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-tablet" data-price="14000" data-output="total-tablet" data-error="calc-error-tablet" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-tablet"
@@ -583,12 +669,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-tablet', 14000, 'total-tablet')"
+                    data-price="14000"
+                    data-output="total-tablet"
+                    data-error="calc-error-tablet"
+                    aria-label="Select quantity for Samsung Galaxy Tab A8 64GB"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-tablet', 1, 14000, 'total-tablet')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-tablet" data-price="14000" data-output="total-tablet" data-error="calc-error-tablet" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 14,000</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-tablet" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-tablet">KSh 14,000</strong>
@@ -596,33 +686,35 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-tablet-btn" onclick="addToCart('product-tablet', 'qty-tablet')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-tablet', 'qty-tablet'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-tablet" data-qty-input="qty-tablet">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-tablet" data-qty-input="qty-tablet">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 11 ── -->
-          <article class="product-card" id="product-physics" data-category="textbooks" data-price="1000" aria-labelledby="name-physics">
+          <!-- ── University Physics with Modern Physics 14e ── -->
+          <article class="product-card" id="product-physics" data-category="textbooks" data-price="1000" aria-labelledby="name-product-physics">
             <div class="product-img-wrap">
-              <img src="images/physics.jpg" alt="University Physics with Modern Physics 15e" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/physics.jpg" alt="University Physics with Modern Physics 14th edition paperback textbook" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+
             </div>
             <div class="product-body">
               <p class="product-category">Textbooks</p>
-              <h2 class="product-name" id="name-physics">University Physics with Modern Physics 15e</h2>
-              <p class="product-desc">Young &amp; Freedman. Very good condition — pages clean, binding tight. Covers PHY101 through PHY301 units comprehensively.</p>
+              <h2 class="product-name" id="name-product-physics">University Physics with Modern Physics 14e</h2>
+              <p class="product-desc">Young and Freedman. Paperback global edition, covers all introductory physics courses (PHY101, 102, 201).</p>
               <div class="product-footer">
-                <div class="product-price">KSh 1,000 <span class="original">KSh 3,000</span></div>
+                <div class="product-price">KSh 1,000 <span class="original">KSh 2,400</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">CI</div>
-                  <span>Chloe I.</span>
+                  <div class="seller-avatar" aria-hidden="true">KB</div>
+                  <span>Kevin B.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-physics" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-physics', -1, 1000, 'total-physics')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-physics" data-price="1000" data-output="total-physics" data-error="calc-error-physics" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-physics"
@@ -630,12 +722,16 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-physics', 1000, 'total-physics')"
+                    data-price="1000"
+                    data-output="total-physics"
+                    data-error="calc-error-physics"
+                    aria-label="Select quantity for University Physics with Modern Physics 14e"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-physics', 1, 1000, 'total-physics')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-physics" data-price="1000" data-output="total-physics" data-error="calc-error-physics" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 1,000</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-physics" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-physics">KSh 1,000</strong>
@@ -643,36 +739,35 @@
               </div>
 
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-physics-btn" onclick="addToCart('product-physics', 'qty-physics')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-physics', 'qty-physics'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-physics" data-qty-input="qty-physics">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-physics" data-qty-input="qty-physics">Buy Now</button>
               </div>
             </div>
           </article>
 
-          <!-- ── PRODUCT 12 ── -->
-          <article class="product-card" id="product-desk-lamp" data-category="furniture" data-price="600" aria-labelledby="name-desk-lamp">
+          <!-- ── LED Desk Lamp with USB Charging Port ── -->
+          <article class="product-card" id="product-desk-lamp" data-category="furniture" data-price="600" aria-labelledby="name-product-desk-lamp">
             <div class="product-img-wrap">
-              <img src="images/furniture.jpg" alt="LED Desk Lamp with USB Charging Port" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
-              <div class="product-badge-wrap">
-                <span class="badge badge-new">New</span>
-              </div>
+              <img src="images/furniture.jpg" alt="Modern flexible LED desk study lamp with built-in USB charging port" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+
             </div>
             <div class="product-body">
               <p class="product-category">Furniture</p>
-              <h2 class="product-name" id="name-desk-lamp">LED Desk Lamp with USB Charging Port</h2>
-              <p class="product-desc">3 brightness modes, touch control, built-in USB port for phone charging. Eye-care tech for late-night study. Works perfectly.</p>
+              <h2 class="product-name" id="name-product-desk-lamp">LED Desk Lamp with USB Charging Port</h2>
+              <p class="product-desc">3 color modes (warm, cool, daylight) and 5 brightness levels. Flexible gooseneck arm and touch control base.</p>
               <div class="product-footer">
                 <div class="product-price">KSh 600 <span class="original">KSh 1,200</span></div>
                 <div class="product-seller">
-                  <div class="seller-avatar" aria-hidden="true">BP</div>
-                  <span>Ben P.</span>
+                  <div class="seller-avatar" aria-hidden="true">LM</div>
+                  <span>Laura M.</span>
                 </div>
               </div>
-              <!-- Quantity Calculation (Live Running Total) -->
+
+              <!-- Quantity Calculation (Live Running Total with Validation) -->
               <div class="product-calc-box">
                 <div class="calc-row">
                   <label for="qty-desk-lamp" class="calc-label">Qty:</label>
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-desk-lamp', -1, 600, 'total-desk-lamp')" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="btn-qty btn-qty-dec" data-target="qty-desk-lamp" data-price="600" data-output="total-desk-lamp" data-error="calc-error-desk-lamp" aria-label="Decrease quantity">−</button>
                   <input
                     type="number"
                     id="qty-desk-lamp"
@@ -680,43 +775,33 @@
                     value="1"
                     min="1"
                     max="99"
-                    aria-label="Select quantity"
-                    oninput="calculateProductTotal('qty-desk-lamp', 600, 'total-desk-lamp')"
+                    data-price="600"
+                    data-output="total-desk-lamp"
+                    data-error="calc-error-desk-lamp"
+                    aria-label="Select quantity for LED Desk Lamp with USB Charging Port"
                   />
-                  <button type="button" class="btn-qty" onclick="changeQty('qty-desk-lamp', 1, 600, 'total-desk-lamp')" aria-label="Increase quantity">+</button>
+                  <button type="button" class="btn-qty btn-qty-inc" data-target="qty-desk-lamp" data-price="600" data-output="total-desk-lamp" data-error="calc-error-desk-lamp" aria-label="Increase quantity">+</button>
                   <span class="calc-rate">× KSh 600</span>
                 </div>
+                <!-- Validation feedback container (Animated with CSS transition) -->
+                <div class="calc-error-msg" id="calc-error-desk-lamp" role="alert" aria-live="polite"></div>
                 <div class="calc-total-row">
                   <span>Running Total:</span>
                   <strong class="calc-total-price" id="total-desk-lamp">KSh 600</strong>
                 </div>
               </div>
+
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" id="cart-lamp-btn" onclick="addToCart('product-desk-lamp', 'qty-desk-lamp')">🛒 Add to Cart</button>
-                <button type="button" class="btn-card btn-card-secondary" onclick="addToCart('product-desk-lamp', 'qty-desk-lamp'); openCheckoutModal();">Buy Now</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-desk-lamp" data-qty-input="qty-desk-lamp">🛒 Add to Cart</button>
+                <button type="button" class="btn-card btn-card-secondary btn-buy-now" data-product="product-desk-lamp" data-qty-input="qty-desk-lamp">Buy Now</button>
               </div>
             </div>
           </article>
 
-        </div><!-- /products-grid -->
-
-      </div><!-- /container -->
-    </div><!-- /catalog-main -->
-
-
-    <!-- =========================================================
-         CTA
-         ========================================================= -->
-    <section class="cta-section" aria-labelledby="catalog-cta-heading">
-      <div class="container">
-        <h2 id="catalog-cta-heading">Have Something to Sell?</h2>
-        <p>List your item for free and reach hundreds of students on campus right now.</p>
-        <div class="cta-buttons">
-          <a href="register.html" class="btn btn-primary" id="catalog-cta-signup">📦 Post a Free Listing</a>
-          <a href="index.html"    class="btn btn-outline"  id="catalog-cta-home">← Back to Home</a>
         </div>
+
       </div>
-    </section>
+    </div>
 
   </main>
 
@@ -724,7 +809,7 @@
   <!-- =========================================================
        FOOTER
        ========================================================= -->
-  <footer class="site-footer" aria-label="Site footer">
+  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
 

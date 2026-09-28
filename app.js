@@ -1,35 +1,46 @@
 /**
- * CampusMarket — Client-side Behavior
+ * CampusMarket — Integrated Client-side Logic (Weeks 1 to 4)
  * File: app.js
- * Standard: Modern ECMAScript (Strictly using 'let' and 'const' for predictable block scoping)
+ * Standard: Modern ECMAScript (strictly using let and const for predictable scoping)
  * 
- * Features:
- * 1. Live Filtering & Search:
- *    - Real-time text search across product names, categories, and descriptions.
- *    - Category filter chips (All, Textbooks, Electronics, Clothing, Furniture, Sports, Stationery).
- *    - URL hash navigation (e.g. #books, #electronics) for links from the home page.
- *    - Uses a `for` loop to inspect every product card.
- *    - Uses `if / else` decision logic to determine visibility.
+ * ==========================================================================
+ * INTEGRATION ARCHITECTURE (WEEKS 1 - 4):
+ * ==========================================================================
+ * 1. Filtered Results Drive the Showcase Gallery (Week 2 + Week 4 Integration):
+ *    - The product filter (filterProducts) collects matching products into a
+ *      shared dataset: 'activeFilteredProducts'.
+ *    - This shared dataset directly drives the Interactive Showcase Gallery
+ *      (updateShowcaseGallery), so filtering down to a category or searching
+ *      immediately updates the carousel slides to only display matching items.
  * 
- * 2. Live Price & Quantity Calculation:
- *    - Quantity input multiplied live by item price.
- *    - Real-time running subtotal display as quantity changes.
- *    - Uses `if / else` decision logic to validate inputs and handle edge cases.
+ * 2. Calculations Respond Exclusively to Validated Input (Week 2 + Week 3 Integration):
+ *    - calculateProductTotal validates input: checks for empty strings, NaN,
+ *      negative/zero values, non-integers, and excessive numbers.
+ *    - If invalid, the running total excludes the item (displays 'KSh —'),
+ *      highlights the input with .is-invalid, and displays an animated error.
+ *    - Only valid inputs update the running calculation.
  * 
- * 3. Registration Form Validation & Interactive UI:
- *    - Attached exclusively with `addEventListener` (no inline onclick).
- *    - Prevents page reload with `event.preventDefault()`.
- *    - Validates required fields, email format regex, and password matching rule.
- *    - Interactive show/hide password toggle.
- *    - Real-time feedback messages.
+ * 3. Animated Confirmation on Valid Form Submit (Week 3 + Week 4 Integration):
+ *    - On validated registration submit, an interactive @keyframes animation
+ *      ('animate-success') is triggered via classList.add (zero alert() calls).
+ * 
+ * 4. Specific Validation Feedback with CSS Transitions (Week 3 + Week 4 Integration):
+ *    - Every validation rule names the exact problem (e.g. missing '@', domain).
+ *    - Error messages smoothly fade and slide in/out using CSS transitions.
+ * 
+ * 5. Clean Event Listener Architecture (Week 3 Requirement):
+ *    - All interactions are wired via addEventListener (zero inline onclick/oninput).
  */
 
 // Track the currently selected category (default: 'all')
 let currentCategory = 'all';
 
+// Shared state: array of currently filtered product objects (Integration Requirement 1)
+let activeFilteredProducts = [];
+let currentSlideIndex = 0;
+
 /**
- * Debounce: delays execution until `wait` ms have passed since last call.
- * Prevents the search filter from running on every single keystroke.
+ * Debounce helper: delays execution until 'wait' ms have passed.
  * @param {Function} fn - Function to debounce
  * @param {number} wait - Milliseconds to wait
  */
@@ -44,6 +55,10 @@ function debounce(fn, wait) {
     }, wait);
   };
 }
+
+/* ============================================================
+   PART 1: FILTER & SEARCH (WEEK 2) + SHARED DATA INTEGRATION
+   ============================================================ */
 
 /**
  * Filter products by category when a chip is clicked
@@ -62,27 +77,28 @@ function filterCategory(category, btnElement) {
   if (btnElement) {
     btnElement.classList.add('active');
   } else {
-    // If called programmatically, find the matching button
+    // If called programmatically, find matching button
     const matchingChip = document.querySelector('[data-filter="' + currentCategory + '"]');
     if (matchingChip) {
       matchingChip.classList.add('active');
     } else {
       const allChip = document.getElementById('filter-all');
-      if (allChip) {
-        allChip.classList.add('active');
-      }
+      if (allChip) allChip.classList.add('active');
     }
   }
+
+  // Reset showcase slide index to 0 whenever category changes
+  currentSlideIndex = 0;
 
   // Re-run filtering across all products
   filterProducts();
 }
 
 /**
- * Filter the product grid based on the current search query and selected category.
- * Demonstrates:
- * 1. A loop traversing the product list.
- * 2. if / else decision logic.
+ * Filter product grid based on search query & category.
+ * INTEGRATION REQUIREMENT 1:
+ * - Collects matching products into 'activeFilteredProducts'.
+ * - Shares this data with updateShowcaseGallery so the slideshow mirrors the filtered set.
  */
 function filterProducts() {
   const searchInput = document.getElementById('catalog-search');
@@ -93,12 +109,13 @@ function filterProducts() {
 
   const productCards = document.querySelectorAll('.product-card');
   let visibleCount = 0;
+  activeFilteredProducts = []; // Reset shared filtered dataset
 
-  // Requirement: At least one function uses a loop to go through the product list
+  // Requirement: Function uses a loop to traverse product list
   for (let i = 0; i < productCards.length; i++) {
     const card = productCards[i];
 
-    // Read category from data attribute or fallback to inner category element
+    // Read category from data attribute
     let cardCat = card.getAttribute('data-category') || '';
     if (!cardCat) {
       const catEl = card.querySelector('.product-category');
@@ -106,13 +123,17 @@ function filterProducts() {
     }
     cardCat = cardCat.toLowerCase().trim();
 
-    // Read product name and description for text search
+    // Read product name and description
     const nameEl = card.querySelector('.product-name');
     const descEl = card.querySelector('.product-desc');
+    const imgEl = card.querySelector('.product-img');
+    const sellerEl = card.querySelector('.product-seller span');
+    const priceAttr = card.getAttribute('data-price');
+
     const productName = nameEl ? nameEl.textContent.toLowerCase() : '';
     const productDesc = descEl ? descEl.textContent.toLowerCase() : '';
 
-    // Requirement: At least one function uses if / else to make a decision
+    // Requirement: Uses if / else decision logic
     let matchesCategory = false;
     if (currentCategory === 'all') {
       matchesCategory = true;
@@ -137,6 +158,18 @@ function filterProducts() {
     if (matchesCategory && matchesSearch) {
       card.style.display = '';
       visibleCount++;
+
+      // Populate shared filtered dataset for the showcase gallery
+      activeFilteredProducts.push({
+        id: card.id,
+        name: nameEl ? nameEl.textContent.trim() : 'Product',
+        desc: descEl ? descEl.textContent.trim() : '',
+        price: parseFloat(priceAttr) || 0,
+        category: cardCat,
+        image: imgEl ? imgEl.getAttribute('src') : 'images/calculus textbook.jpg',
+        alt: imgEl ? imgEl.getAttribute('alt') : 'Product photo',
+        seller: sellerEl ? sellerEl.textContent.trim() : 'Student'
+      });
     } else {
       card.style.display = 'none';
     }
@@ -144,6 +177,9 @@ function filterProducts() {
 
   // Update results counter & empty state
   updateResultsBar(visibleCount, query);
+
+  // INTEGRATION REQUIREMENT 1: Update the Showcase Gallery with shared filtered data
+  updateShowcaseGallery(activeFilteredProducts);
 }
 
 /**
@@ -169,7 +205,7 @@ function updateResultsBar(count, query) {
     }
   }
 
-  // If no products match, show an informative empty-state message
+  // If no products match, show empty-state message
   if (count === 0) {
     if (!emptyState && grid) {
       emptyState = document.createElement('div');
@@ -184,7 +220,12 @@ function updateResultsBar(count, query) {
         '<div class="empty-icon">🔍</div>' +
         '<h3>No listings found</h3>' +
         '<p>We couldn\'t find any products ' + hint + '. Try another search or filter.</p>' +
-        '<button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>';
+        '<button type="button" class="btn btn-secondary" id="btn-reset-filters">Reset All Filters</button>';
+      
+      const resetBtn = document.getElementById('btn-reset-filters');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', resetFilters);
+      }
     }
   } else {
     if (emptyState) {
@@ -204,117 +245,226 @@ function resetFilters() {
   filterCategory('all');
 }
 
-/**
- * Calculates live running total for a product based on quantity
- * Requirement:
- * - Multiplied live by its price, showing a running total as the quantity changes
- * - Uses if / else to make decisions
- * 
- * @param {string|HTMLInputElement} inputElementOrId - The input element or its ID
- * @param {number} unitPrice - The unit price of the item
- * @param {string} outputElementId - The ID of the element to display the total
- */
-function calculateProductTotal(inputElementOrId, unitPrice, outputElementId) {
-  let inputEl;
-  if (typeof inputElementOrId === 'string') {
-    inputEl = document.getElementById(inputElementOrId);
-  } else {
-    inputEl = inputElementOrId;
-  }
+/* ============================================================
+   PART 2: INTERACTIVE SHOWCASE GALLERY (WEEK 4)
+   Driven by Filtered Data with Correct Wraparound at Both Ends
+   ============================================================ */
 
-  const outputEl = document.getElementById(outputElementId);
-  if (!inputEl || !outputEl) {
+/**
+ * Updates the Showcase Gallery view using the shared filtered products array.
+ * @param {Array} productsList - Filtered products from filterProducts()
+ */
+function updateShowcaseGallery(productsList) {
+  const showcase = document.getElementById('catalog-showcase');
+  if (!showcase) return; // Not on catalog page
+
+  const counterEl = document.getElementById('showcase-counter');
+  const countTextEl = document.getElementById('showcase-count-text');
+  const statusEl = document.getElementById('showcase-status');
+  const stageEl = document.getElementById('showcase-active-card');
+  const dotsEl = document.getElementById('showcase-dots');
+
+  if (!productsList || productsList.length === 0) {
+    if (stageEl) {
+      stageEl.innerHTML = 
+        '<div class="showcase-empty">' +
+          '<h3>No matching showcase items</h3>' +
+          '<p>No items in this category or matching your search. Reset filters to view products.</p>' +
+        '</div>';
+    }
+    if (counterEl) counterEl.textContent = '0 items';
+    if (dotsEl) dotsEl.innerHTML = '';
     return;
   }
 
-  const qty = parseInt(inputEl.value, 10);
+  // Wraparound bounds check: clamp slide index if out of range
+  if (currentSlideIndex >= productsList.length) {
+    currentSlideIndex = 0;
+  } else if (currentSlideIndex < 0) {
+    currentSlideIndex = productsList.length - 1;
+  }
 
-  // Requirement: uses if / else to make a decision
-  if (isNaN(qty) || qty <= 0) {
-    outputEl.textContent = 'KSh 0';
-    outputEl.style.color = '#dc2626'; // Highlight error
-  } else if (qty > 99) {
-    // Cap quantity if unreasonably high
-    inputEl.value = 99;
-    const maxTotal = 99 * unitPrice;
-    outputEl.textContent = 'KSh ' + maxTotal.toLocaleString();
-    outputEl.style.color = '';
-  } else {
-    const total = qty * unitPrice;
-    outputEl.textContent = 'KSh ' + total.toLocaleString();
-    outputEl.style.color = '';
+  const currentItem = productsList[currentSlideIndex];
+
+  // Update slide counter (e.g. "Slide 1 of 4")
+  if (counterEl) {
+    counterEl.textContent = 'Slide ' + (currentSlideIndex + 1) + ' of ' + productsList.length;
+  }
+  if (countTextEl) {
+    countTextEl.textContent = productsList.length + (productsList.length === 1 ? ' item' : ' items') + ' in rotation';
+  }
+  if (statusEl) {
+    const catLabel = currentCategory === 'all' ? 'All Products' : currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+    statusEl.innerHTML = 'Filtered to: <strong>' + escapeHTML(catLabel) + '</strong> (' + productsList.length + ' in rotation)';
+  }
+
+  // Render active slide with CSS entrance transition
+  if (stageEl) {
+    stageEl.classList.remove('slide-transition');
+    void stageEl.offsetWidth; // Force DOM reflow to retrigger animation
+    stageEl.classList.add('slide-transition');
+
+    stageEl.innerHTML = 
+      '<div class="showcase-img-wrap">' +
+        '<img src="' + escapeHTML(currentItem.image) + '" alt="' + escapeHTML(currentItem.alt || currentItem.name) + '" width="400" height="300" />' +
+      '</div>' +
+      '<div class="showcase-info">' +
+        '<span class="showcase-cat-tag">' + escapeHTML(currentItem.category) + '</span>' +
+        '<h3 class="showcase-item-title">' + escapeHTML(currentItem.name) + '</h3>' +
+        '<p class="showcase-item-desc">' + escapeHTML(currentItem.desc) + '</p>' +
+        '<div class="showcase-price-row">' +
+          '<span class="showcase-price">KSh ' + currentItem.price.toLocaleString() + '</span>' +
+          '<span class="showcase-seller-tag">Seller: ' + escapeHTML(currentItem.seller) + '</span>' +
+        '</div>' +
+        '<div class="showcase-btn-row">' +
+          '<button type="button" class="btn-add-to-cart" data-product="' + escapeHTML(currentItem.id) + '">🛒 Add to Cart</button>' +
+          '<a href="#' + escapeHTML(currentItem.id) + '" class="btn-showcase-jump">Jump to Listing ↓</a>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // Render slide indicator dots
+  if (dotsEl) {
+    let dotsHtml = '';
+    for (let d = 0; d < productsList.length; d++) {
+      const activeClass = d === currentSlideIndex ? ' active' : '';
+      dotsHtml += '<button type="button" class="showcase-dot' + activeClass + '" data-slide-index="' + d + '" aria-label="Go to slide ' + (d + 1) + '"></button>';
+    }
+    dotsEl.innerHTML = dotsHtml;
   }
 }
 
 /**
- * Helper to adjust quantity with +/- buttons
- * @param {string} inputId - ID of the quantity input
- * @param {number} delta - Amount to change (+1 or -1)
- * @param {number} unitPrice - Unit price of the item
- * @param {string} outputId - ID of the total display element
+ * Slide forward with wraparound at the end
  */
-function changeQty(inputId, delta, unitPrice, outputId) {
+function nextSlide() {
+  if (!activeFilteredProducts || activeFilteredProducts.length === 0) return;
+  // Wraparound: last slide wraps back to 0
+  currentSlideIndex = (currentSlideIndex + 1) % activeFilteredProducts.length;
+  updateShowcaseGallery(activeFilteredProducts);
+}
+
+/**
+ * Slide backward with wraparound at the start
+ */
+function prevSlide() {
+  if (!activeFilteredProducts || activeFilteredProducts.length === 0) return;
+  // Wraparound: slide 0 wraps to last slide
+  currentSlideIndex = (currentSlideIndex - 1 + activeFilteredProducts.length) % activeFilteredProducts.length;
+  updateShowcaseGallery(activeFilteredProducts);
+}
+
+/* ============================================================
+   PART 3: LIVE RUNNING CALCULATIONS & VALIDATION (WEEKS 2 & 3)
+   ============================================================ */
+
+/**
+ * Calculates live running total for a product based on validated quantity.
+ * INTEGRATION REQUIREMENT 2:
+ * - Only updates using data that has passed validation.
+ * - If quantity fails validation (empty, zero, negative, non-numeric, decimal),
+ *   the total is EXCLUDED from calculation (shows 'KSh — (Invalid Qty)')
+ *   and an animated error message is displayed naming the specific reason.
+ * 
+ * @param {HTMLInputElement} inputEl - The quantity input element
+ * @param {number} unitPrice - The unit price of the item in KSh
+ * @param {string} outputElId - ID of the element displaying total
+ * @param {string} [errorElId] - ID of the element displaying error feedback
+ * @returns {boolean} Whether validation passed
+ */
+function calculateProductTotal(inputEl, unitPrice, outputElId, errorElId) {
+  if (!inputEl) return false;
+
+  const outputEl = document.getElementById(outputElId);
+  const errorEl = errorElId ? document.getElementById(errorElId) : null;
+  const rawVal = inputEl.value;
+  const trimmed = rawVal !== null && rawVal !== undefined ? String(rawVal).trim() : '';
+
+  let errorMessage = '';
+
+  // Validation rules:
+  if (trimmed === '') {
+    errorMessage = 'Quantity cannot be empty. Please enter a number (1–99).';
+  } else {
+    const num = Number(trimmed);
+    if (isNaN(num)) {
+      errorMessage = 'Quantity must be a valid numeric digit.';
+    } else if (num <= 0) {
+      errorMessage = 'Quantity must be at least 1 whole item (cannot be 0 or negative).';
+    } else if (!Number.isInteger(num)) {
+      errorMessage = 'Quantity must be a whole integer without decimals.';
+    } else if (num > 99) {
+      errorMessage = 'Maximum allowed quantity is 99 items per listing.';
+    }
+  }
+
+  // Handle validation outcome using if / else
+  if (errorMessage !== '') {
+    // FAILED VALIDATION:
+    inputEl.classList.remove('is-valid');
+    inputEl.classList.add('is-invalid');
+
+    if (errorEl) {
+      errorEl.textContent = '⚠️ ' + errorMessage;
+      errorEl.classList.add('visible'); // Trigger CSS transition
+    }
+
+    if (outputEl) {
+      // Excluded from total calculation!
+      outputEl.textContent = 'KSh — (Invalid Qty)';
+      outputEl.classList.add('is-invalid');
+    }
+    return false;
+  } else {
+    // PASSED VALIDATION:
+    const validQty = parseInt(trimmed, 10);
+    inputEl.classList.remove('is-invalid');
+    inputEl.classList.add('is-valid');
+
+    if (errorEl) {
+      errorEl.textContent = '';
+      errorEl.classList.remove('visible'); // Trigger CSS transition out
+    }
+
+    if (outputEl) {
+      const calculatedTotal = validQty * unitPrice;
+      outputEl.textContent = 'KSh ' + calculatedTotal.toLocaleString();
+      outputEl.classList.remove('is-invalid');
+    }
+    return true;
+  }
+}
+
+/**
+ * Adjust quantity with +/- stepper buttons and run validation
+ * @param {string} inputId - ID of quantity input
+ * @param {number} delta - Amount to adjust (+1 or -1)
+ * @param {number} unitPrice - Item unit price
+ * @param {string} outputId - Output total ID
+ * @param {string} errorId - Error message element ID
+ */
+function changeQty(inputId, delta, unitPrice, outputId, errorId) {
   const inputEl = document.getElementById(inputId);
   if (!inputEl) return;
 
   let currentVal = parseInt(inputEl.value, 10);
-  if (isNaN(currentVal)) {
+  if (isNaN(currentVal) || currentVal < 1) {
     currentVal = 1;
   }
 
   let newVal = currentVal + delta;
   if (newVal < 1) {
     newVal = 1;
+  } else if (newVal > 99) {
+    newVal = 99;
   }
 
   inputEl.value = newVal;
-  calculateProductTotal(inputEl, unitPrice, outputId);
+  calculateProductTotal(inputEl, unitPrice, outputId, errorId);
 }
 
 /**
- * Utility: Escape HTML for safe rendering in messages
- */
-function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, function(tag) {
-    return {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag;
-  });
-}
-
-/**
- * Handle initial URL hash on page load (e.g. catalog.html#books)
- */
-function handleUrlHash() {
-  const hash = window.location.hash.toLowerCase().replace('#', '');
-  if (!hash) return;
-
-  // Map hash aliases to category names
-  const hashToCat = {
-    'books': 'textbooks',
-    'textbooks': 'textbooks',
-    'electronics': 'electronics',
-    'clothing': 'clothing',
-    'clothes': 'clothing',
-    'furniture': 'furniture',
-    'sports': 'sports',
-    'stationery': 'stationery'
-  };
-
-  if (hashToCat[hash]) {
-    const targetCat = hashToCat[hash];
-    const chip = document.querySelector('[data-filter="' + targetCat + '"]');
-    filterCategory(targetCat, chip);
-  }
-}
-
-/**
- * Sort products by price (Low to High, High to Low) or original order.
- * Uses requestAnimationFrame to batch DOM writes and avoid jank.
+ * Sort products by price or default order
  */
 function sortProducts() {
   const sortSelect = document.getElementById('sort-select');
@@ -339,24 +489,70 @@ function sortProducts() {
     });
   }
 
-  // Batch all DOM writes into a single rAF to avoid layout thrashing
   requestAnimationFrame(function() {
-    // Use a DocumentFragment so we only trigger one reflow
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < cards.length; i++) {
       fragment.appendChild(cards[i]);
     }
     grid.appendChild(fragment);
+
+    // Re-synchronize showcase gallery with new sort order
+    filterProducts();
   });
 }
 
+/**
+ * Utility: Escape HTML for safe rendering
+ */
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>'"]/g, function(tag) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag;
+  });
+}
+
+/**
+ * Handle initial URL hash on page load (e.g. catalog.html#books)
+ */
+function handleUrlHash() {
+  const hash = window.location.hash.toLowerCase().replace('#', '');
+  if (!hash) return;
+
+  const hashToCat = {
+    'books': 'textbooks',
+    'textbooks': 'textbooks',
+    'electronics': 'electronics',
+    'clothing': 'clothing',
+    'clothes': 'clothing',
+    'furniture': 'furniture',
+    'sports': 'sports',
+    'stationery': 'stationery'
+  };
+
+  if (hashToCat[hash]) {
+    const targetCat = hashToCat[hash];
+    const chip = document.querySelector('[data-filter="' + targetCat + '"]');
+    filterCategory(targetCat, chip);
+  }
+}
+
 /* ============================================================
-   REGISTRATION FORM VALIDATION & INTERACTIVE UI (PART 3)
+   PART 4: REGISTRATION FORM VALIDATION & ANIMATIONS (WEEKS 3 & 4)
    ============================================================ */
 
 /**
- * Initializes registration form validation and interactive behaviors
- * All events are attached exclusively via addEventListener (no onclick).
+ * Initializes registration form validation and interactive behaviors.
+ * INTEGRATION REQUIREMENTS 3 & 4:
+ * - Specific, naming-the-problem feedback for each field.
+ * - CSS transitions on error appearance.
+ * - Meaningful @keyframes animation confirmation on success.
+ * - Attached exclusively via addEventListener (zero inline handlers).
  */
 function initRegistrationForm() {
   const form = document.getElementById('registration-form');
@@ -371,7 +567,7 @@ function initRegistrationForm() {
   const togglePwBtn = document.getElementById('toggle-pw-btn');
   const feedbackEl = document.getElementById('form-feedback');
 
-  // Helper to show/clear field error
+  // Helper to show field error with smooth CSS transition
   function setError(inputEl, errorId, message) {
     const errorEl = document.getElementById(errorId);
     if (inputEl) {
@@ -379,12 +575,13 @@ function initRegistrationForm() {
       inputEl.classList.add('is-invalid');
     }
     if (errorEl) {
-      errorEl.textContent = message;
-      errorEl.classList.add('visible');
+      errorEl.textContent = '⚠️ ' + message;
+      errorEl.classList.add('visible'); // Trigger CSS transition
     }
     return false;
   }
 
+  // Helper to clear field error with smooth CSS transition
   function setValid(inputEl, errorId) {
     const errorEl = document.getElementById(errorId);
     if (inputEl) {
@@ -393,33 +590,40 @@ function initRegistrationForm() {
     }
     if (errorEl) {
       errorEl.textContent = '';
-      errorEl.classList.remove('visible');
+      errorEl.classList.remove('visible'); // Trigger CSS transition
     }
     return true;
   }
 
-  // 1. Required Check: Full Name cannot be empty
+  // Rule 1 (Required Rule): Full Name validation
   function validateName() {
     const val = nameInput ? nameInput.value.trim() : '';
     if (val === '') {
       return setError(nameInput, 'name-error', 'Full Name is required and cannot be empty.');
     } else if (val.length < 2) {
-      return setError(nameInput, 'name-error', 'Name must be at least 2 characters.');
+      return setError(nameInput, 'name-error', 'Name must be at least 2 characters long.');
+    } else if (!/^[a-zA-Zs'-]+$/.test(val)) {
+      return setError(nameInput, 'name-error', 'Name should only contain letters, spaces, or hyphens.');
     } else {
       return setValid(nameInput, 'name-error');
     }
   }
 
-  // 2. Format Check: Valid Email syntax
+  // Rule 2 (Format Rule): Email validation naming specific errors
   function validateEmail() {
     const val = emailInput ? emailInput.value.trim() : '';
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (val === '') {
-      return setError(emailInput, 'email-error', 'University email is required.');
-    } else if (!emailRegex.test(val)) {
-      return setError(emailInput, 'email-error', 'Please enter a valid email format (e.g. name@university.edu).');
+      return setError(emailInput, 'email-error', 'University email address is required.');
+    } else if (val.indexOf('@') === -1) {
+      // Specific requirement check
+      return setError(emailInput, 'email-error', 'Email address must contain an "@" symbol.');
     } else {
-      return setValid(emailInput, 'email-error');
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(val)) {
+        return setError(emailInput, 'email-error', 'Email must include a valid domain (e.g. student@university.ac.ke).');
+      } else {
+        return setValid(emailInput, 'email-error');
+      }
     }
   }
 
@@ -427,17 +631,17 @@ function initRegistrationForm() {
   function validateCampus() {
     const val = campusSelect ? campusSelect.value : '';
     if (val === '') {
-      return setError(campusSelect, 'campus-error', 'Please select your campus.');
+      return setError(campusSelect, 'campus-error', 'Please choose your university campus from the dropdown list.');
     } else {
       return setValid(campusSelect, 'campus-error');
     }
   }
 
-  // Password requirement (min 6 characters)
+  // Password length requirement
   function validatePassword() {
     const val = passwordInput ? passwordInput.value : '';
     if (val === '') {
-      return setError(passwordInput, 'password-error', 'Password is required.');
+      return setError(passwordInput, 'password-error', 'Password is required to secure your student account.');
     } else if (val.length < 6) {
       return setError(passwordInput, 'password-error', 'Password must be at least 6 characters long.');
     } else {
@@ -445,117 +649,93 @@ function initRegistrationForm() {
     }
   }
 
-  // 3. Custom Rule: Passwords must match
+  // Rule 3 (Custom Rule): Passwords must match
   function validateConfirmPassword() {
     const pwVal = passwordInput ? passwordInput.value : '';
     const confirmVal = confirmInput ? confirmInput.value : '';
     if (confirmVal === '') {
-      return setError(confirmInput, 'confirm-error', 'Please confirm your password.');
+      return setError(confirmInput, 'confirm-error', 'Please re-enter your password to confirm.');
     } else if (confirmVal !== pwVal) {
-      return setError(confirmInput, 'confirm-error', 'Passwords do not match. Please re-enter.');
+      return setError(confirmInput, 'confirm-error', 'Passwords do not match. Please re-enter matching passwords.');
     } else {
       return setValid(confirmInput, 'confirm-error');
     }
   }
 
-  // Terms and conditions required checkbox
+  // Terms and conditions acceptance
   function validateTerms() {
-    const checked = termsCheckbox ? termsCheckbox.checked : false;
-    if (!checked) {
-      return setError(null, 'terms-error', 'You must agree to the safety guidelines to register.');
+    if (termsCheckbox && !termsCheckbox.checked) {
+      return setError(termsCheckbox, 'terms-error', 'You must agree to the Campus Safety Guidelines and Community Rules.');
     } else {
-      return setValid(null, 'terms-error');
+      return setValid(termsCheckbox, 'terms-error');
     }
   }
 
-  // ─── INTERACTIVE UI ELEMENT: Show / Hide Password Toggle ───
-  // Attached strictly using addEventListener
-  if (togglePwBtn && passwordInput) {
-    togglePwBtn.addEventListener('click', function() {
-      const isPassword = passwordInput.getAttribute('type') === 'password';
-      const newType = isPassword ? 'text' : 'password';
-
-      passwordInput.setAttribute('type', newType);
-      if (confirmInput) {
-        confirmInput.setAttribute('type', newType);
-      }
-
-      const iconEl = togglePwBtn.querySelector('.toggle-icon');
-      const textEl = togglePwBtn.querySelector('.toggle-text');
-      if (iconEl) iconEl.textContent = isPassword ? '🙈' : '👁️';
-      if (textEl) textEl.textContent = isPassword ? 'Hide' : 'Show';
-    });
-  }
-
-  // ─── Real-time Live Validation Listeners (addEventListener) ───
-  if (nameInput) {
-    nameInput.addEventListener('input', validateName);
-    nameInput.addEventListener('blur', validateName);
-  }
-  if (emailInput) {
-    emailInput.addEventListener('input', validateEmail);
-    emailInput.addEventListener('blur', validateEmail);
-  }
-  if (campusSelect) {
-    campusSelect.addEventListener('change', validateCampus);
-  }
+  // Live input validation listeners
+  if (nameInput) nameInput.addEventListener('input', validateName);
+  if (emailInput) emailInput.addEventListener('input', validateEmail);
+  if (campusSelect) campusSelect.addEventListener('change', validateCampus);
   if (passwordInput) {
     passwordInput.addEventListener('input', function() {
       validatePassword();
-      if (confirmInput && confirmInput.value !== '') {
-        validateConfirmPassword();
-      }
+      if (confirmInput && confirmInput.value !== '') validateConfirmPassword();
     });
   }
-  if (confirmInput) {
-    confirmInput.addEventListener('input', validateConfirmPassword);
-    confirmInput.addEventListener('blur', validateConfirmPassword);
+  if (confirmInput) confirmInput.addEventListener('input', validateConfirmPassword);
+  if (termsCheckbox) termsCheckbox.addEventListener('change', validateTerms);
+
+  // Show / Hide Password toggle
+  if (togglePwBtn && passwordInput) {
+    togglePwBtn.addEventListener('click', function() {
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+      if (confirmInput) {
+        confirmInput.setAttribute('type', isPassword ? 'text' : 'password');
+      }
+      this.textContent = isPassword ? '🙈 Hide' : '👁️ Show';
+      this.setAttribute('aria-label', isPassword ? 'Hide password characters' : 'Show password characters');
+    });
   }
-  if (termsCheckbox) {
-    termsCheckbox.addEventListener('change', validateTerms);
-  }
 
-  // ─── Form Submission via addEventListener with event.preventDefault() ───
-  form.addEventListener('submit', function(event) {
-    // Requirement: Use event.preventDefault() so the page does not reload
-    event.preventDefault();
+  // Form submission handler
+  form.addEventListener('submit', function(e) {
+    // Requirement: event.preventDefault() used on form submit
+    e.preventDefault();
 
-    const validName = validateName();
-    const validEmail = validateEmail();
-    const validCampus = validateCampus();
-    const validPassword = validatePassword();
-    const validConfirm = validateConfirmPassword();
-    const validTerms = validateTerms();
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isCampusValid = validateCampus();
+    const isPasswordValid = validatePassword();
+    const isConfirmValid = validateConfirmPassword();
+    const isTermsValid = validateTerms();
 
-    // Check all rules with if / else
-    if (validName && validEmail && validCampus && validPassword && validConfirm && validTerms) {
-      // ─── Interactive UI Element: Live Success Message ───
-      const studentName = nameInput.value.trim();
-      feedbackEl.className = 'form-feedback success';
-      feedbackEl.style.display = 'block';
+    const isFormValid = isNameValid && isEmailValid && isCampusValid && isPasswordValid && isConfirmValid && isTermsValid;
+
+    if (isFormValid) {
+      const studentName = nameInput ? nameInput.value.trim() : 'Student';
+
+      // INTEGRATION REQUIREMENT 3: Trigger meaningful @keyframes animation via classList.add
+      feedbackEl.className = 'form-feedback success visible animate-success';
       feedbackEl.innerHTML = 
-        '🎉 <strong>Registration Successful!</strong><br />' +
-        'Welcome to CampusMarket, <strong>' + escapeHTML(studentName) + '</strong>! ' +
-        'Your student account has been created. You can now list items and buy from fellow students.';
+        '<div class="success-check-badge" aria-hidden="true">✓</div>' +
+        '<h3>Account Created Successfully!</h3>' +
+        '<p>Welcome to CampusMarket, <strong>' + escapeHTML(studentName) + '</strong>! Your student account is now verified and active.</p>' +
+        '<p style="margin-top:0.5rem; font-size:0.86rem; color:#065f46;">You can now list items, browse catalog listings, and trade safely on campus.</p>';
 
-      // Clear input fields and validation states
+      // Reset form fields and remove validation classes
       form.reset();
-      [nameInput, emailInput, campusSelect, passwordInput, confirmInput].forEach(function(el) {
-        if (el) el.classList.remove('is-valid');
-      });
-
-      // Scroll smoothly to confirmation
-      feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const validInputs = form.querySelectorAll('.is-valid');
+      for (let i = 0; i < validInputs.length; i++) {
+        validInputs[i].classList.remove('is-valid');
+      }
     } else {
-      // ─── Interactive UI Element: Clear Error Notification ───
-      feedbackEl.className = 'form-feedback error';
-      feedbackEl.style.display = 'block';
+      // INTEGRATION REQUIREMENT 4: Specific failure feedback
+      feedbackEl.className = 'form-feedback error visible';
       feedbackEl.innerHTML = 
-        '⚠️ <strong>Please correct the errors in the form above.</strong><br />' +
-        'All required fields must be completed correctly to proceed.';
+        '⚠️ <strong>Please correct the highlighted fields before submitting.</strong><br />' +
+        'Ensure all required fields are filled, your email includes an @ symbol, and your passwords match.';
 
-      // Focus first invalid element
-      const firstInvalid = form.querySelector('.is-invalid, input:invalid');
+      const firstInvalid = form.querySelector('.is-invalid');
       if (firstInvalid) {
         firstInvalid.focus();
       }
@@ -563,61 +743,25 @@ function initRegistrationForm() {
   });
 }
 
-// Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', function() {
-  // 1. Hook up live search input — debounced to 200ms to avoid lag on every keystroke
-  const searchInput = document.getElementById('catalog-search');
-  if (searchInput) {
-    const debouncedFilter = debounce(filterProducts, 200);
-    searchInput.addEventListener('input', debouncedFilter);
-    searchInput.addEventListener('search', filterProducts); // instant on clear/Enter
-  }
-
-  // 2. Hook up filter chips
-  const chips = document.querySelectorAll('.chip');
-  for (let i = 0; i < chips.length; i++) {
-    chips[i].addEventListener('click', function() {
-      const cat = this.getAttribute('data-filter') || 'all';
-      filterCategory(cat, this);
-    });
-  }
-
-  // 3. Hook up sort select
-  const sortSelect = document.getElementById('sort-select');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', sortProducts);
-  }
-
-  // 4. Hook up initial URL hash (e.g. #books)
-  handleUrlHash();
-  window.addEventListener('hashchange', handleUrlHash);
-
-  // 5. Initialize registration form behavior
-  initRegistrationForm();
-
-  // 6. Initialize Shopping Cart System
-  initCartSystem();
-});
-
 /* ============================================================
-   CAMPUSMARKET SHOPPING CART SYSTEM
+   PART 5: SHOPPING CART MODULE & CAMPUS CHECKOUT
    ============================================================ */
 
 const CART_STORAGE_KEY = 'campusmarket_cart_v1';
 
-// Fallback catalog registry for consistent item metadata
+// Fallback catalog registry
 const CATALOG_REGISTRY = {
   'product-calculus': { name: 'Calculus: Early Transcendentals 9e', price: 1200, category: 'Textbooks', image: 'images/calculus textbook.jpg', seller: 'Alice K.' },
   'product-calculus-textbook': { name: 'Calculus: Early Transcendentals 9e', price: 1200, category: 'Textbooks', image: 'images/calculus textbook.jpg', seller: 'Alice K.' },
-  'product-lenovo': { name: 'Lenovo IdeaPad 3 — 8GB RAM, 512GB SSD', price: 28000, category: 'Electronics', image: 'images/lenovo.jpg', seller: 'Brian M.' },
-  'product-laptop': { name: 'Lenovo IdeaPad 3 — 8GB RAM, 512GB SSD', price: 28000, category: 'Electronics', image: 'images/lenovo.jpg', seller: 'Brian M.' },
-  'product-hoodie': { name: 'University Branded Hoodie (Size M)', price: 850, category: 'Clothing', image: 'images/uni hoodie.jpg', seller: 'Carol W.' },
-  'product-biology': { name: 'Campbell Biology (11th Edition)', price: 1500, category: 'Textbooks', image: 'images/calculus textbook.jpg', seller: 'David O.' },
+  'product-lenovo': { name: 'Lenovo IdeaPad 3 — 8GB / 512GB', price: 28000, category: 'Electronics', image: 'images/lenovo.jpg', seller: 'James O.' },
+  'product-laptop': { name: 'Lenovo IdeaPad 3 — 8GB / 512GB', price: 28000, category: 'Electronics', image: 'images/lenovo.jpg', seller: 'James O.' },
+  'product-hoodie': { name: 'University Branded Hoodie — Size M', price: 850, category: 'Clothing', image: 'images/uni hoodie.jpg', seller: 'Naomi M.' },
+  'product-biology': { name: 'Campbell Biology (11th Edition)', price: 1500, category: 'Textbooks', image: 'images/textbooks.jpg', seller: 'David K.' },
   'product-headphones': { name: 'Sony WH-CH520 Wireless Headphones', price: 12500, category: 'Electronics', image: 'images/electronics.jpg', seller: 'Eva N.' },
-  'product-chair': { name: 'Ergonomic Study Desk Chair', price: 3200, category: 'Furniture', image: 'images/furniture.jpg', seller: 'Francis K.' },
-  'product-football': { name: 'Nike Pitch Football (Size 5)', price: 700, category: 'Sports', image: 'images/sports.jpg', seller: 'George T.' },
-  'product-calculator': { name: 'Casio fx-991EX Scientific Calculator', price: 1100, category: 'Stationery', image: 'images/stationery.jpg', seller: 'Hellen A.' },
-  'product-jeans': { name: 'Slim-Fit Denim Jeans (Size 32)', price: 1800, category: 'Clothing', image: 'images/clothing.jpg', seller: 'Ian M.' },
+  'product-chair': { name: 'Ergonomic Study Desk Chair', price: 3200, category: 'Furniture', image: 'images/furniture.jpg', seller: 'Francis M.' },
+  'product-football': { name: 'Nike Pitch Football — Size 5', price: 700, category: 'Sports', image: 'images/sports.jpg', seller: 'George T.' },
+  'product-calculator': { name: 'Casio fx-991EX ClassWiz Calculator', price: 1100, category: 'Stationery', image: 'images/stationery.jpg', seller: 'Hellen A.' },
+  'product-jeans': { name: 'Levi\'s 511 Slim Jeans — Size 32', price: 1800, category: 'Clothing', image: 'images/clothing.jpg', seller: 'Ian M.' },
   'product-tablet': { name: 'Samsung Galaxy Tab A8 64GB', price: 14000, category: 'Electronics', image: 'images/samsung.jpg', seller: 'Jane D.' },
   'product-physics': { name: 'University Physics with Modern Physics 14e', price: 1000, category: 'Textbooks', image: 'images/physics.jpg', seller: 'Kevin B.' },
   'product-desk-lamp': { name: 'LED Desk Lamp with USB Charging Port', price: 600, category: 'Furniture', image: 'images/furniture.jpg', seller: 'Laura M.' }
@@ -625,35 +769,30 @@ const CATALOG_REGISTRY = {
 
 /**
  * Retrieve current cart from localStorage
- * @returns {Array} List of cart item objects
  */
 function getCart() {
   try {
     const data = localStorage.getItem(CART_STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   } catch (e) {
-    console.error('Failed to parse cart storage:', e);
     return [];
   }
 }
 
 /**
  * Save cart to localStorage and update UI
- * @param {Array} cart - Updated cart array
  */
 function saveCart(cart) {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   } catch (e) {
-    console.error('Failed to save cart storage:', e);
+    console.error('Failed to save cart:', e);
   }
   renderCartUI();
 }
 
 /**
  * Add product to cart with chosen quantity
- * @param {string} productId - Product card ID or registry key
- * @param {string|number} [qtyOrInputId=1] - Quantity value or input element ID
  */
 function addToCart(productId, qtyOrInputId) {
   let qty = 1;
@@ -672,7 +811,6 @@ function addToCart(productId, qtyOrInputId) {
 
   if (isNaN(qty) || qty <= 0) qty = 1;
 
-  // Extract metadata from DOM card if present, otherwise fallback to registry
   let itemData = CATALOG_REGISTRY[productId] || null;
   const card = document.getElementById(productId);
 
@@ -694,7 +832,7 @@ function addToCart(productId, qtyOrInputId) {
   } else if (!itemData) {
     itemData = {
       id: productId,
-      name: 'Campus Item',
+      name: 'Campus Listing',
       price: 1000,
       category: 'General',
       image: 'images/calculus textbook.jpg',
@@ -723,16 +861,14 @@ function addToCart(productId, qtyOrInputId) {
 
   saveCart(cart);
 
-  // Trigger bounce animation on cart badges
+  // Bounce animation on cart badge
   const badges = document.querySelectorAll('.cart-badge');
   badges.forEach(function(badge) {
     badge.classList.remove('cart-badge-bounce');
-    // Force reflow
     void badge.offsetWidth;
     badge.classList.add('cart-badge-bounce');
   });
 
-  // Display user feedback toast
   showCartToast(
     'Added to Cart! 🛒',
     qty + '× ' + itemData.name + ' (KSh ' + (itemData.price * qty).toLocaleString() + ')'
@@ -740,9 +876,7 @@ function addToCart(productId, qtyOrInputId) {
 }
 
 /**
- * Adjust quantity of an item in the cart (+1 or -1)
- * @param {string} productId - Product ID
- * @param {number} delta - Change in quantity
+ * Adjust cart quantity (+1 or -1)
  */
 function updateCartQty(productId, delta) {
   const cart = getCart();
@@ -757,8 +891,7 @@ function updateCartQty(productId, delta) {
 }
 
 /**
- * Remove an item completely from the cart
- * @param {string} productId - Product ID
+ * Remove item from cart
  */
 function removeFromCart(productId) {
   let cart = getCart();
@@ -772,7 +905,7 @@ function removeFromCart(productId) {
 }
 
 /**
- * Empty the entire cart
+ * Clear entire cart
  */
 function clearCart() {
   if (confirm('Are you sure you want to clear your cart?')) {
@@ -782,7 +915,7 @@ function clearCart() {
 }
 
 /**
- * Calculate total cart price and total item count
+ * Calculate totals
  */
 function getCartTotals() {
   const cart = getCart();
@@ -798,7 +931,7 @@ function getCartTotals() {
 }
 
 /**
- * Open the cart drawer
+ * Open cart drawer
  */
 function openCart() {
   ensureCartDOM();
@@ -812,7 +945,7 @@ function openCart() {
 }
 
 /**
- * Close the cart drawer
+ * Close cart drawer
  */
 function closeCart() {
   const drawer = document.getElementById('cart-drawer');
@@ -825,7 +958,7 @@ function closeCart() {
 }
 
 /**
- * Toggle cart drawer state
+ * Toggle cart drawer
  */
 function toggleCart() {
   const drawer = document.getElementById('cart-drawer');
@@ -837,14 +970,14 @@ function toggleCart() {
 }
 
 /**
- * Render the cart drawer UI and update all badges
+ * Render cart drawer UI and badges
  */
 function renderCartUI() {
   ensureCartDOM();
   const cart = getCart();
   const totals = getCartTotals();
 
-  // Update all badge elements across headers and floating triggers
+  // Update badge counters across page
   const badges = document.querySelectorAll('.cart-badge');
   badges.forEach(function(badge) {
     badge.textContent = totals.totalCount;
@@ -880,7 +1013,7 @@ function renderCartUI() {
       subtotalEl.textContent = 'KSh ' + totals.totalPrice.toLocaleString();
     }
 
-    // Build items HTML
+    // Build items using DOM-safe construction
     let html = '';
     for (let i = 0; i < cart.length; i++) {
       const item = cart[i];
@@ -897,12 +1030,12 @@ function renderCartUI() {
             '<div class="cart-item-price">KSh ' + item.price.toLocaleString() + '</div>' +
             '<div class="cart-item-bottom">' +
               '<div class="cart-qty-stepper">' +
-                '<button type="button" class="btn-step" onclick="updateCartQty(\'' + escapeHTML(item.id) + '\', -1)" aria-label="Decrease quantity">−</button>' +
+                '<button type="button" class="btn-step btn-step-dec" data-id="' + escapeHTML(item.id) + '" aria-label="Decrease quantity">−</button>' +
                 '<span class="qty-number">' + item.qty + '</span>' +
-                '<button type="button" class="btn-step" onclick="updateCartQty(\'' + escapeHTML(item.id) + '\', 1)" aria-label="Increase quantity">+</button>' +
+                '<button type="button" class="btn-step btn-step-inc" data-id="' + escapeHTML(item.id) + '" aria-label="Increase quantity">+</button>' +
               '</div>' +
               '<div class="cart-item-total">KSh ' + itemTotal.toLocaleString() + '</div>' +
-              '<button type="button" class="btn-remove-item" onclick="removeFromCart(\'' + escapeHTML(item.id) + '\')" aria-label="Remove item" title="Remove listing">🗑️</button>' +
+              '<button type="button" class="btn-remove-item" data-id="' + escapeHTML(item.id) + '" aria-label="Remove item" title="Remove listing">🗑️</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -912,7 +1045,7 @@ function renderCartUI() {
 }
 
 /**
- * Show a modern floating toast notification
+ * Toast notifications
  */
 function showCartToast(title, message) {
   const container = document.getElementById('cart-toast-container');
@@ -926,13 +1059,17 @@ function showCartToast(title, message) {
       '<div class="toast-msg">' + escapeHTML(message) + '</div>' +
     '</div>' +
     '<div class="toast-actions">' +
-      '<button type="button" class="btn-toast-view" onclick="openCart()">View Cart</button>' +
+      '<button type="button" class="btn-toast-view">View Cart</button>' +
       '<button type="button" class="btn-toast-close" aria-label="Close">✕</button>' +
     '</div>';
 
   container.appendChild(toast);
 
-  // Auto-dismiss after 4.5 seconds
+  const viewBtn = toast.querySelector('.btn-toast-view');
+  if (viewBtn) {
+    viewBtn.addEventListener('click', openCart);
+  }
+
   let dismissTimer = setTimeout(function() {
     removeToast(toast);
   }, 4500);
@@ -954,7 +1091,7 @@ function showCartToast(title, message) {
 }
 
 /**
- * Opens the campus checkout modal
+ * Campus Checkout modal
  */
 function openCheckoutModal() {
   closeCart();
@@ -963,12 +1100,11 @@ function openCheckoutModal() {
   const totals = getCartTotals();
 
   if (cart.length === 0) {
-    alert('Your cart is empty! Add items before checking out.');
+    showCartToast('Cart Empty', 'Please add items to your cart before proceeding to checkout.');
     return;
   }
 
   if (modalOverlay) {
-    // Populate order summary in modal
     const summaryEl = document.getElementById('checkout-summary-list');
     const totalEl = document.getElementById('checkout-total-price');
 
@@ -993,9 +1129,6 @@ function openCheckoutModal() {
   }
 }
 
-/**
- * Closes the campus checkout modal
- */
 function closeCheckoutModal() {
   const modalOverlay = document.getElementById('checkout-modal-overlay');
   if (modalOverlay) {
@@ -1004,21 +1137,17 @@ function closeCheckoutModal() {
   }
 }
 
-/**
- * Submits the checkout and displays the order confirmation screen
- */
 function handleCheckoutSubmit(e) {
   if (e) e.preventDefault();
 
   const phoneInput = document.getElementById('checkout-phone');
   const pickupSelect = document.getElementById('checkout-location');
-  const notesInput = document.getElementById('checkout-notes');
 
   const phone = phoneInput ? phoneInput.value.trim() : '';
   const pickup = pickupSelect ? pickupSelect.value : 'Student Center Plaza';
 
   if (!phone || phone.length < 8) {
-    alert('Please enter a valid phone or WhatsApp number so the student sellers can coordinate meetup.');
+    alert('Please enter a valid student phone or WhatsApp number so sellers can coordinate meetup timing.');
     if (phoneInput) phoneInput.focus();
     return;
   }
@@ -1027,7 +1156,6 @@ function handleCheckoutSubmit(e) {
   const cart = getCart();
   const totals = getCartTotals();
 
-  // Show confirmation view
   const modalBody = document.getElementById('checkout-modal-body');
   if (modalBody) {
     modalBody.innerHTML = 
@@ -1043,38 +1171,36 @@ function handleCheckoutSubmit(e) {
           '<div class="receipt-row"><span>Payment:</span><strong>Cash / M-Pesa on Delivery</strong></div>' +
         '</div>' +
         '<p class="safety-tip">💡 <strong>Safety Tip:</strong> Always meet in public campus zones during daylight hours (e.g. Library foyer, Student Center). Inspect items before completing payment.</p>' +
-        '<button type="button" class="btn btn-primary btn-block" onclick="finishOrder()">Done &amp; Continue Browsing</button>' +
+        '<button type="button" class="btn btn-primary btn-block" id="btn-finish-order">Done &amp; Continue Browsing</button>' +
       '</div>';
+    
+    const finishBtn = document.getElementById('btn-finish-order');
+    if (finishBtn) {
+      finishBtn.addEventListener('click', finishOrder);
+    }
   }
 
-  // Clear cart storage
   saveCart([]);
 }
 
-/**
- * Resets modal and finishes order
- */
 function finishOrder() {
   closeCheckoutModal();
   setTimeout(function() {
-    // Rebuild default checkout modal structure
     const modalBody = document.getElementById('checkout-modal-body');
     if (modalBody) {
       modalBody.innerHTML = buildCheckoutModalTemplate();
+      bindCheckoutForm();
     }
   }, 400);
 }
 
-/**
- * Generates the HTML template for checkout form
- */
 function buildCheckoutModalTemplate() {
   return (
     '<div class="checkout-modal-header">' +
       '<h3>Campus Meetup &amp; Checkout</h3>' +
-      '<button type="button" class="btn-modal-close" onclick="closeCheckoutModal()" aria-label="Close checkout">✕</button>' +
+      '<button type="button" class="btn-modal-close" id="btn-modal-close-x" aria-label="Close checkout">✕</button>' +
     '</div>' +
-    '<form id="checkout-form" onsubmit="handleCheckoutSubmit(event)">' +
+    '<form id="checkout-form">' +
       '<div class="checkout-summary-box">' +
         '<div class="summary-label">Order Items:</div>' +
         '<div id="checkout-summary-list" class="checkout-summary-list"></div>' +
@@ -1104,10 +1230,25 @@ function buildCheckoutModalTemplate() {
       '</div>' +
       '<div class="checkout-actions">' +
         '<button type="submit" class="btn btn-primary btn-block">Confirm Reservation &amp; Meetup →</button>' +
-        '<button type="button" class="btn btn-secondary btn-block" onclick="closeCheckoutModal()">Cancel</button>' +
+        '<button type="button" class="btn btn-secondary btn-block" id="btn-modal-cancel">Cancel</button>' +
       '</div>' +
     '</form>'
   );
+}
+
+function bindCheckoutForm() {
+  const form = document.getElementById('checkout-form');
+  if (form) {
+    form.addEventListener('submit', handleCheckoutSubmit);
+  }
+  const closeX = document.getElementById('btn-modal-close-x');
+  if (closeX) {
+    closeX.addEventListener('click', closeCheckoutModal);
+  }
+  const cancelBtn = document.getElementById('btn-modal-cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeCheckoutModal);
+  }
 }
 
 /**
@@ -1141,14 +1282,14 @@ function ensureCartDOM() {
         '<h3>🛒 Your Cart</h3>' +
         '<span class="cart-header-count" id="cart-header-count">0 items</span>' +
       '</div>' +
-      '<button type="button" class="btn-drawer-close" onclick="closeCart()" aria-label="Close Cart">✕</button>' +
+      '<button type="button" class="btn-drawer-close" id="btn-drawer-close" aria-label="Close Cart">✕</button>' +
     '</div>' +
     '<div class="cart-drawer-body">' +
       '<div id="cart-empty-view" class="cart-empty-view">' +
         '<div class="empty-cart-icon">🛒</div>' +
         '<h4>Your cart is currently empty</h4>' +
         '<p>Explore the student marketplace to find textbooks, electronics, clothing, and gear.</p>' +
-        '<a href="catalog.html" class="btn btn-primary" onclick="closeCart()">Browse Listings →</a>' +
+        '<a href="catalog.html" class="btn btn-primary" id="btn-empty-browse">Browse Listings →</a>' +
       '</div>' +
       '<div id="cart-items-container" class="cart-items-container"></div>' +
     '</div>' +
@@ -1161,17 +1302,33 @@ function ensureCartDOM() {
         '<span>Subtotal:</span>' +
         '<strong id="cart-subtotal-price" class="cart-subtotal-price">KSh 0</strong>' +
       '</div>' +
-      '<button type="button" class="btn btn-primary btn-block btn-checkout" onclick="openCheckoutModal()">' +
+      '<button type="button" class="btn btn-primary btn-block btn-checkout" id="btn-proceed-checkout">' +
         'Proceed to Meetup Checkout →' +
       '</button>' +
       '<div class="cart-footer-actions">' +
-        '<button type="button" class="btn-cart-clear" onclick="clearCart()">Empty Cart</button>' +
-        '<button type="button" class="btn-cart-continue" onclick="closeCart()">Continue Shopping</button>' +
+        '<button type="button" class="btn-cart-clear" id="btn-clear-cart">Empty Cart</button>' +
+        '<button type="button" class="btn-cart-continue" id="btn-continue-shopping">Continue Shopping</button>' +
       '</div>' +
     '</div>';
   document.body.appendChild(drawer);
 
-  // 4. Floating Cart Button (visible on mobile / desktop when scrolled)
+  // Bind drawer buttons via addEventListener
+  const drawerCloseBtn = document.getElementById('btn-drawer-close');
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeCart);
+
+  const emptyBrowseBtn = document.getElementById('btn-empty-browse');
+  if (emptyBrowseBtn) emptyBrowseBtn.addEventListener('click', closeCart);
+
+  const checkoutBtn = document.getElementById('btn-proceed-checkout');
+  if (checkoutBtn) checkoutBtn.addEventListener('click', openCheckoutModal);
+
+  const clearCartBtn = document.getElementById('btn-clear-cart');
+  if (clearCartBtn) clearCartBtn.addEventListener('click', clearCart);
+
+  const continueBtn = document.getElementById('btn-continue-shopping');
+  if (continueBtn) continueBtn.addEventListener('click', closeCart);
+
+  // 4. Floating Cart Button
   if (!document.getElementById('floating-cart-btn')) {
     const floatBtn = document.createElement('button');
     floatBtn.type = 'button';
@@ -1195,7 +1352,6 @@ function ensureCartDOM() {
       buildCheckoutModalTemplate() +
     '</div>';
   
-  // Close modal when clicking backdrop
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === modalOverlay) {
       closeCheckoutModal();
@@ -1203,8 +1359,9 @@ function ensureCartDOM() {
   });
 
   document.body.appendChild(modalOverlay);
+  bindCheckoutForm();
 
-  // Keyboard shortcut: Escape closes cart or modal
+  // Keyboard shortcut: Escape key closes active overlays
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       closeCart();
@@ -1220,9 +1377,152 @@ function initCartSystem() {
   ensureCartDOM();
   renderCartUI();
 
-  // Attach click listeners to any header cart button elements
-  const cartButtons = document.querySelectorAll('.cart-toggle-btn, [data-cart-toggle]');
-  cartButtons.forEach(function(btn) {
-    btn.addEventListener('click', toggleCart);
+  // Cart item delegation (+, -, remove)
+  document.addEventListener('click', function(e) {
+    const stepDec = e.target.closest('.btn-step-dec');
+    const stepInc = e.target.closest('.btn-step-inc');
+    const removeBtn = e.target.closest('.btn-remove-item');
+
+    if (stepDec) {
+      const id = stepDec.getAttribute('data-id');
+      if (id) updateCartQty(id, -1);
+    } else if (stepInc) {
+      const id = stepInc.getAttribute('data-id');
+      if (id) updateCartQty(id, 1);
+    } else if (removeBtn) {
+      const id = removeBtn.getAttribute('data-id');
+      if (id) removeFromCart(id);
+    }
   });
 }
+
+/* ============================================================
+   PART 6: DOM CONTENT LOADED - GLOBAL EVENT ATTACHMENT
+   Zero inline handlers anywhere in HTML (Week 3 Requirement)
+   ============================================================ */
+
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. Live search input (debounced to avoid thread lag)
+  const searchInput = document.getElementById('catalog-search');
+  if (searchInput) {
+    const debouncedFilter = debounce(filterProducts, 180);
+    searchInput.addEventListener('input', debouncedFilter);
+    searchInput.addEventListener('search', filterProducts);
+  }
+
+  // 2. Filter category chips
+  const chips = document.querySelectorAll('.chip');
+  chips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      const cat = this.getAttribute('data-filter') || 'all';
+      filterCategory(cat, this);
+    });
+  });
+
+  // 3. Sort selector
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', sortProducts);
+  }
+
+  // 4. Showcase Gallery navigation buttons (Week 4 Slideshow)
+  const prevBtn = document.getElementById('showcase-prev-btn');
+  const nextBtn = document.getElementById('showcase-next-btn');
+  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+  // Showcase gallery keyboard arrows
+  const showcaseStage = document.getElementById('showcase-stage');
+  if (showcaseStage) {
+    showcaseStage.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    });
+  }
+
+  // Showcase dots delegation
+  const dotsContainer = document.getElementById('showcase-dots');
+  if (dotsContainer) {
+    dotsContainer.addEventListener('click', function(e) {
+      const dot = e.target.closest('.showcase-dot');
+      if (dot) {
+        const slideIdx = parseInt(dot.getAttribute('data-slide-index'), 10);
+        if (!isNaN(slideIdx) && activeFilteredProducts && activeFilteredProducts.length > 0) {
+          currentSlideIndex = slideIdx;
+          updateShowcaseGallery(activeFilteredProducts);
+        }
+      }
+    });
+  }
+
+  // 5. Quantity Steppers and Live Calculations (Weeks 2 & 3 Integration)
+  document.addEventListener('click', function(e) {
+    const decBtn = e.target.closest('.btn-qty-dec');
+    const incBtn = e.target.closest('.btn-qty-inc');
+    if (decBtn) {
+      const targetId = decBtn.getAttribute('data-target');
+      const price = parseFloat(decBtn.getAttribute('data-price')) || 0;
+      const outputId = decBtn.getAttribute('data-output');
+      const errorId = decBtn.getAttribute('data-error');
+      changeQty(targetId, -1, price, outputId, errorId);
+    } else if (incBtn) {
+      const targetId = incBtn.getAttribute('data-target');
+      const price = parseFloat(incBtn.getAttribute('data-price')) || 0;
+      const outputId = incBtn.getAttribute('data-output');
+      const errorId = incBtn.getAttribute('data-error');
+      changeQty(targetId, 1, price, outputId, errorId);
+    }
+  });
+
+  // Quantity input real-time validation & calculation
+  document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('calc-qty-input')) {
+      const price = parseFloat(e.target.getAttribute('data-price')) || 0;
+      const outputId = e.target.getAttribute('data-output');
+      const errorId = e.target.getAttribute('data-error');
+      calculateProductTotal(e.target, price, outputId, errorId);
+    }
+  });
+
+  // 6. Add to Cart & Buy Now Buttons (Pure addEventListener via delegation)
+  document.addEventListener('click', function(e) {
+    const addBtn = e.target.closest('.btn-add-to-cart');
+    const buyBtn = e.target.closest('.btn-buy-now');
+    const headerCartBtn = e.target.closest('#header-cart-btn, .btn-cart-header, [data-cart-toggle]');
+
+    if (addBtn) {
+      const productId = addBtn.getAttribute('data-product');
+      const qtyInputId = addBtn.getAttribute('data-qty-input');
+      const staticQty = addBtn.getAttribute('data-qty');
+      const qty = qtyInputId ? qtyInputId : (staticQty ? parseInt(staticQty, 10) : 1);
+      if (productId) addToCart(productId, qty);
+    } else if (buyBtn) {
+      const productId = buyBtn.getAttribute('data-product');
+      const qtyInputId = buyBtn.getAttribute('data-qty-input');
+      if (productId) {
+        addToCart(productId, qtyInputId || 1);
+        openCheckoutModal();
+      }
+    } else if (headerCartBtn) {
+      toggleCart();
+    }
+  });
+
+  // 7. Initial hash handling
+  handleUrlHash();
+  window.addEventListener('hashchange', handleUrlHash);
+
+  // 8. Initialize Registration Form Validation
+  initRegistrationForm();
+
+  // 9. Initialize Shopping Cart System
+  initCartSystem();
+
+  // 10. Initial Gallery Synchronization on Catalog Page
+  if (document.getElementById('products-grid')) {
+    filterProducts();
+  }
+});

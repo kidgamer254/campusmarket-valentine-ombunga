@@ -38,7 +38,7 @@
 
         <!-- Header Actions -->
         <div class="header-actions">
-          <button type="button" class="btn-cart-header" id="header-cart-btn" onclick="toggleCart()" aria-label="Shopping Cart">
+          <button type="button" class="btn-cart-header" id="header-cart-btn" aria-label="Shopping Cart">
             <span class="cart-icon">🛒</span>
             <span class="cart-text">Cart</span>
             <span class="cart-badge">0</span>
@@ -57,7 +57,7 @@
          HERO
          ========================================================= -->
     <section class="hero" aria-label="Hero banner">
-      <img src="images/image 1.jpg" alt="Students buying and selling on campus" class="hero-bg-img" fetchpriority="high" decoding="async" />
+      <img src="images/image 1.jpg" alt="University students gathered around a campus outdoor plaza buying and selling textbooks and study items" class="hero-bg-img" fetchpriority="high" decoding="async" />
       <div class="hero-overlay" aria-hidden="true"></div>
 
       <div class="container">
@@ -128,42 +128,42 @@
         <div class="categories-grid">
           <a href="catalog.html#books" class="category-card" id="cat-books">
             <div class="category-img-wrap">
-              <img src="images/textbooks.jpg" alt="Textbooks" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/textbooks.jpg" alt="Stack of university textbooks and study course guides" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Textbooks</h3>
             <p class="category-count">320 listings</p>
           </a>
           <a href="catalog.html#electronics" class="category-card" id="cat-electronics">
             <div class="category-img-wrap">
-              <img src="images/electronics.jpg" alt="Electronics" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/electronics.jpg" alt="Modern student electronics including wireless headphones, charging cords, and gadgets" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Electronics</h3>
             <p class="category-count">185 listings</p>
           </a>
           <a href="catalog.html#clothing" class="category-card" id="cat-clothing">
             <div class="category-img-wrap">
-              <img src="images/clothing.jpg" alt="Clothing" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/clothing.jpg" alt="Campus apparel and university branded hoodies hanging on a clothing rack" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Clothing</h3>
             <p class="category-count">410 listings</p>
           </a>
           <a href="catalog.html#furniture" class="category-card" id="cat-furniture">
             <div class="category-img-wrap">
-              <img src="images/furniture.jpg" alt="Furniture" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/furniture.jpg" alt="Ergonomic mesh office desk chair and student study room furniture" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Furniture</h3>
             <p class="category-count">92 listings</p>
           </a>
           <a href="catalog.html#sports" class="category-card" id="cat-sports">
             <div class="category-img-wrap">
-              <img src="images/sports.jpg" alt="Sports" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/sports.jpg" alt="Official campus league football and outdoor sports equipment" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Sports</h3>
             <p class="category-count">138 listings</p>
           </a>
           <a href="catalog.html#stationery" class="category-card" id="cat-stationery">
             <div class="category-img-wrap">
-              <img src="images/stationery.jpg" alt="Stationery" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
+              <img src="images/stationery.jpg" alt="University examination stationery, notebooks, pens, and scientific calculators" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Stationery</h3>
             <p class="category-count">204 listings</p>
@@ -189,7 +189,7 @@
           <!-- Product 1: Textbooks -->
           <article class="product-card" id="product-calculus-textbook">
             <div class="product-img-wrap">
-              <img src="images/calculus textbook.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/calculus textbook.jpg" alt="Calculus Early Transcendentals 9th Edition textbook by Stewart with blue cover in like-new condition" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Hot</span>
               </div>
@@ -208,7 +208,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-calculus-textbook', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-calculus-textbook" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-calculus" class="btn-card btn-card-secondary" id="view-calculus-btn">Details →</a>
               </div>
             </div>
@@ -217,7 +217,7 @@
           <!-- Product 2: Electronics -->
           <article class="product-card" id="product-laptop">
             <div class="product-img-wrap">
-              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3 student laptop computer with slim grey chassis and charger" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Sale</span>
               </div>
@@ -236,7 +236,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-laptop', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-laptop" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-lenovo" class="btn-card btn-card-secondary" id="view-laptop-btn">Details →</a>
               </div>
             </div>
@@ -245,7 +245,7 @@
           <!-- Product 3: Clothing -->
           <article class="product-card" id="product-hoodie">
             <div class="product-img-wrap">
-              <img src="images/uni hoodie.jpg" alt="University Hoodie" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/uni hoodie.jpg" alt="Navy blue university campus branded pullover hoodie size medium with white emblem" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">New</span>
               </div>
@@ -264,7 +264,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-hoodie', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-hoodie" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-hoodie" class="btn-card btn-card-secondary" id="view-hoodie-btn">Details →</a>
               </div>
             </div>
@@ -273,7 +273,7 @@
           <!-- Product 4: Furniture -->
           <article class="product-card" id="product-chair">
             <div class="product-img-wrap">
-              <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/furniture.jpg" alt="Ergonomic mesh study desk chair with adjustable lumbar support and height lever" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Popular</span>
               </div>
@@ -292,7 +292,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-chair', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-chair" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-chair" class="btn-card btn-card-secondary" id="view-chair-btn">Details →</a>
               </div>
             </div>
@@ -301,7 +301,7 @@
           <!-- Product 5: Sports -->
           <article class="product-card" id="product-football">
             <div class="product-img-wrap">
-              <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/sports.jpg" alt="Nike Pitch football size 5 official campus league match ball" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">Fresh</span>
               </div>
@@ -320,7 +320,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-football', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-football" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-football" class="btn-card btn-card-secondary" id="view-football-btn">Details →</a>
               </div>
             </div>
@@ -329,7 +329,7 @@
           <!-- Product 6: Stationery -->
           <article class="product-card" id="product-calculator">
             <div class="product-img-wrap">
-              <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
+              <img src="images/stationery.jpg" alt="Casio fx-991EX ClassWiz scientific calculator approved for campus exams" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Essential</span>
               </div>
@@ -348,7 +348,7 @@
                 </div>
               </div>
               <div class="card-actions-group">
-                <button type="button" class="btn-add-to-cart" onclick="addToCart('product-calculator', 1)">🛒 Add to Cart</button>
+                <button type="button" class="btn-add-to-cart" data-product="product-calculator" data-qty="1">🛒 Add to Cart</button>
                 <a href="catalog.html#product-calculator" class="btn-card btn-card-secondary" id="view-calculator-btn">Details →</a>
               </div>
             </div>
