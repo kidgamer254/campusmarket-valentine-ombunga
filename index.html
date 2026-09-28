@@ -1,10 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="CampusMarket — the student-run marketplace where you can buy, sell, and swap textbooks, electronics, clothes, and more. Built for campus life." />
   <title>CampusMarket — Buy &amp; Sell on Campus</title>
+  <!-- Performance: Preconnect to Google Fonts to cut DNS + TLS latency -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Performance: Preload the hero image (LCP element) for faster paint -->
+  <link rel="preload" as="image" href="images/image 1.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -47,7 +52,7 @@
          HERO
          ========================================================= -->
     <section class="hero" aria-label="Hero banner">
-      <img src="images/image 1.jpg" alt="Students buying and selling on campus" class="hero-bg-img" />
+      <img src="images/image 1.jpg" alt="Students buying and selling on campus" class="hero-bg-img" fetchpriority="high" decoding="async" />
       <div class="hero-overlay" aria-hidden="true"></div>
 
       <div class="container">
@@ -118,42 +123,42 @@
         <div class="categories-grid">
           <a href="catalog.html#books" class="category-card" id="cat-books">
             <div class="category-img-wrap">
-              <img src="images/textbooks.jpg" alt="Textbooks" class="category-img" />
+              <img src="images/textbooks.jpg" alt="Textbooks" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Textbooks</h3>
             <p class="category-count">320 listings</p>
           </a>
           <a href="catalog.html#electronics" class="category-card" id="cat-electronics">
             <div class="category-img-wrap">
-              <img src="images/electronics.jpg" alt="Electronics" class="category-img" />
+              <img src="images/electronics.jpg" alt="Electronics" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Electronics</h3>
             <p class="category-count">185 listings</p>
           </a>
           <a href="catalog.html#clothing" class="category-card" id="cat-clothing">
             <div class="category-img-wrap">
-              <img src="images/clothing.jpg" alt="Clothing" class="category-img" />
+              <img src="images/clothing.jpg" alt="Clothing" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Clothing</h3>
             <p class="category-count">410 listings</p>
           </a>
           <a href="catalog.html#furniture" class="category-card" id="cat-furniture">
             <div class="category-img-wrap">
-              <img src="images/furniture.jpg" alt="Furniture" class="category-img" />
+              <img src="images/furniture.jpg" alt="Furniture" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Furniture</h3>
             <p class="category-count">92 listings</p>
           </a>
           <a href="catalog.html#sports" class="category-card" id="cat-sports">
             <div class="category-img-wrap">
-              <img src="images/sports.jpg" alt="Sports" class="category-img" />
+              <img src="images/sports.jpg" alt="Sports" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Sports</h3>
             <p class="category-count">138 listings</p>
           </a>
           <a href="catalog.html#stationery" class="category-card" id="cat-stationery">
             <div class="category-img-wrap">
-              <img src="images/stationery.jpg" alt="Stationery" class="category-img" />
+              <img src="images/stationery.jpg" alt="Stationery" class="category-img" loading="lazy" decoding="async" width="82" height="82" />
             </div>
             <h3>Stationery</h3>
             <p class="category-count">204 listings</p>
@@ -179,7 +184,7 @@
           <!-- Product 1: Textbooks -->
           <article class="product-card" id="product-calculus-textbook">
             <div class="product-img-wrap">
-              <img src="images/calculus textbook.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" />
+              <img src="images/calculus textbook.jpg" alt="Calculus: Early Transcendentals 9e" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Hot</span>
               </div>
@@ -204,7 +209,7 @@
           <!-- Product 2: Electronics -->
           <article class="product-card" id="product-laptop">
             <div class="product-img-wrap">
-              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3" class="product-img" />
+              <img src="images/lenovo.jpg" alt="Lenovo IdeaPad 3" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Sale</span>
               </div>
@@ -229,7 +234,7 @@
           <!-- Product 3: Clothing -->
           <article class="product-card" id="product-hoodie">
             <div class="product-img-wrap">
-              <img src="images/uni hoodie.jpg" alt="University Hoodie" class="product-img" />
+              <img src="images/uni hoodie.jpg" alt="University Hoodie" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">New</span>
               </div>
@@ -254,7 +259,7 @@
           <!-- Product 4: Furniture -->
           <article class="product-card" id="product-chair">
             <div class="product-img-wrap">
-              <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" />
+              <img src="images/furniture.jpg" alt="Ergonomic Study Chair" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-sale">Popular</span>
               </div>
@@ -279,7 +284,7 @@
           <!-- Product 5: Sports -->
           <article class="product-card" id="product-football">
             <div class="product-img-wrap">
-              <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" />
+              <img src="images/sports.jpg" alt="Adidas Match Football" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-new">Fresh</span>
               </div>
@@ -304,7 +309,7 @@
           <!-- Product 6: Stationery -->
           <article class="product-card" id="product-calculator">
             <div class="product-img-wrap">
-              <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" />
+              <img src="images/stationery.jpg" alt="Casio FX-991EX Scientific Calculator" class="product-img" loading="lazy" decoding="async" width="400" height="300" />
               <div class="product-badge-wrap">
                 <span class="badge badge-hot">Essential</span>
               </div>
@@ -497,6 +502,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>

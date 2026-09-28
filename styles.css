@@ -398,15 +398,16 @@ p {
    border-radius: 50%;
    animation: blob-float 8s ease-in-out infinite alternate;
    z-index: -1;
+   will-change: transform;
 }
 
 @keyframes blob-float {
    0% {
-      transform: translate(0, 0) scale(1);
+      transform: translate3d(0, 0, 0) scale(1);
    }
 
    100% {
-      transform: translate(-40px, 30px) scale(1.1);
+      transform: translate3d(-40px, 30px, 0) scale(1.1);
    }
 }
 
@@ -666,6 +667,8 @@ p {
    transition: transform var(--t-normal), box-shadow var(--t-normal), border-color var(--t-normal);
    position: relative;
    box-shadow: var(--shadow-xs);
+   contain: layout style;
+   will-change: transform;
 }
 
 .product-card:hover {
@@ -686,6 +689,7 @@ p {
    height: 100%;
    object-fit: cover;
    transition: transform var(--t-slow);
+   will-change: transform;
 }
 
 .product-card:hover .product-img {
@@ -1567,4 +1571,30 @@ p {
 }
 .auth-footer a:hover {
   text-decoration: underline;
+}
+
+/* ============================================================
+   PERFORMANCE & ACCESSIBILITY
+   ============================================================ */
+
+/* Respect user's system preference to reduce motion (accessibility + perf) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Contain layout for category cards to reduce reflow scope */
+.category-card {
+  contain: layout style;
+}
+
+/* After product cards stop being hovered, free the GPU layer */
+.product-card:not(:hover) {
+  will-change: auto;
 }

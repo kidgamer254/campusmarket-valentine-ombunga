@@ -28,6 +28,24 @@
 let currentCategory = 'all';
 
 /**
+ * Debounce: delays execution until `wait` ms have passed since last call.
+ * Prevents the search filter from running on every single keystroke.
+ * @param {Function} fn - Function to debounce
+ * @param {number} wait - Milliseconds to wait
+ */
+function debounce(fn, wait) {
+  let timer;
+  return function() {
+    const args = arguments;
+    const ctx = this;
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      fn.apply(ctx, args);
+    }, wait);
+  };
+}
+
+/**
  * Filter products by category when a chip is clicked
  * @param {string} category - Category slug ('all', 'textbooks', 'electronics', etc.)
  * @param {HTMLElement} [btnElement] - The button that was clicked
@@ -295,7 +313,8 @@ function handleUrlHash() {
 }
 
 /**
- * Sort products by price (Low to High, High to Low) or original order
+ * Sort products by price (Low to High, High to Low) or original order.
+ * Uses requestAnimationFrame to batch DOM writes and avoid jank.
  */
 function sortProducts() {
   const sortSelect = document.getElementById('sort-select');
@@ -320,10 +339,15 @@ function sortProducts() {
     });
   }
 
-  // Re-append cards to grid in sorted order using a loop
-  for (let i = 0; i < cards.length; i++) {
-    grid.appendChild(cards[i]);
-  }
+  // Batch all DOM writes into a single rAF to avoid layout thrashing
+  requestAnimationFrame(function() {
+    // Use a DocumentFragment so we only trigger one reflow
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < cards.length; i++) {
+      fragment.appendChild(cards[i]);
+    }
+    grid.appendChild(fragment);
+  });
 }
 
 /* ============================================================
@@ -541,11 +565,12 @@ function initRegistrationForm() {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Hook up live search input
+  // 1. Hook up live search input — debounced to 200ms to avoid lag on every keystroke
   const searchInput = document.getElementById('catalog-search');
   if (searchInput) {
-    searchInput.addEventListener('input', filterProducts);
-    searchInput.addEventListener('search', filterProducts);
+    const debouncedFilter = debounce(filterProducts, 200);
+    searchInput.addEventListener('input', debouncedFilter);
+    searchInput.addEventListener('search', filterProducts); // instant on clear/Enter
   }
 
   // 2. Hook up filter chips
